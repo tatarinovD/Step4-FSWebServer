@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script type="text/javascript" src="/function.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест кнопки</title>
+  
+  <script type="text/javascript">
+  
+  function on(submit){
+	server = "/restart?device=on";
+	send_request(submit,server);
+	return true;
+   }
+      
+function accept(submit){
+    server = "/ssdp?ssdp="+val('ssdp');
+    send_request(submit,server);
+    document.getElementById('ssdp_t').innerHTML = val('ssdp');
+   }
+
+  </script>
+ <meta name="generator" content="Namo WebEditor(Trial)">
+ </head>
+ <body onload="load();"><br><br>
+   	 
+    <input type="submit" style="text-align:center" class="btn btn-block" value="{{PinStste}}" onclick="on(this);" >
+    <input type="submit" style="text-align:center" class="btn btn-block" value="{{PinStste}}" onclick="on(this);" ><BR>
+    <input id="PinRele1" value="{{SSDP}}" class="form-control" pattern="[0-9. ]{1,2}" placeholder="">
+    <input type="submit" style="text-align:center" class="btn btn-block" value="Save" onclick="accept(this);" ><br>
+    <input id="PinRele2" value="{{SSDP}}" class="form-control" pattern="[0-9. ]{1,2}" placeholder="">
+    <input type="submit" style="text-align:center" class="btn btn-block" value="Save" onclick="accept(this);" ><br>
+        
+
+ </body>
+</html>
