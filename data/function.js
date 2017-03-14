@@ -58,9 +58,8 @@ function submit_disabled(request){
   if (inputs[i].type === 'submit') {inputs[i].disabled = request;}
  }
 }
-/*
+
 function toggle(target) {
  var curVal = document.getElementById(target).className;
  document.getElementById(target).className = (curVal === 'hidden') ? 'show' : 'hidden';
 }
-*/
