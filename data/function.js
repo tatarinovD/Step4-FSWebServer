@@ -1,9 +1,9 @@
-var xmlHttp=createXmlHttpObject();
+var xmlHttp = createXmlHttpObject();
 function createXmlHttpObject(){
  if(window.XMLHttpRequest){
-  xmlHttp=new XMLHttpRequest();
+  xmlHttp = new XMLHttpRequest();
  }else{
-  xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+  xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
  }
  return xmlHttp;
 }
@@ -17,7 +17,6 @@ function load(){
   }
  }
 }
-
 function loadBlock(data2) {
  data2 = JSON.parse(xmlHttp.responseText);
  data = document.getElementsByTagName('body')[0].innerHTML;
