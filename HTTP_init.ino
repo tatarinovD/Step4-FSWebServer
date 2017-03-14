@@ -57,7 +57,7 @@ void handle_Restart() {
 
 void handle_swdlight() {
   String swdlight = HTTP.arg("swdlight");          // Получаем значение device из запроса
-  if (swdlight == "ok") {    
+  if (swdlight == "on") {    
       byte i = digitalRead(PinDlight); 
       digitalWrite(PinDlight,!i); 
       if (i) swdlight = "выключено";
@@ -66,8 +66,8 @@ void handle_swdlight() {
     HTTP.send(200, "text/plain", swdlight);
    }
   void handle_swnlight() {
-  String swnlight = HTTP.arg("switchrele");          // Получаем значение device из запроса
-  if (swnlight == "ok") {    
+  String swnlight = HTTP.arg("swnlight");          // Получаем значение device из запроса
+  if (swnlight == "on") {    
       byte i = digitalRead(PinDlight); 
       digitalWrite(PinDlight,!i); 
       if (i) swnlight = "выключено";
