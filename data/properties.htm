@@ -37,11 +37,27 @@
   <div class="container">
    <div class="row" style="text-align:center;">
     <h1 style="margin:50px;">Страница управления</h1>
-    <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
-    <input type="submit" style="text-align:center" class="btn btn-block" value="{{DlightState}}" onclick="Dlight(this);" >
-    <input type="submit" style="text-align:center" class="btn btn-block" value="{{NlightState}}" onclick="Nlight(this);" ><br><br><br> 
+    <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-5">
+    <div class="row">
+    <div class="col-sm-6">
+      <input id="DlightPin" value="{{PinDlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина дневного освещения">
+      <input class="btn btn-block btn-success" value="Сохранить" onclick="set_DlightPin(this);" type="submit">
+    </div>
+    <div class="col-sm-6">
+      <input id="NlightPin" value="{{PinNlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина ночного освещения">
+      <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+    </div>
+    </div><br><br>
+    
+    <div class="row">
+    <div class="col-sm-6">
+      <input id="DlightPin" value="{{PinDlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина дневного освещения">
+      <input class="btn btn-block btn-success" value="Сохранить" onclick="set_DlightPin(this);" type="submit">
+    </div>
+
+    </div><br><br>
     <a class="btn btn-block btn-default" href="/setup.htm">setup</a>
-    <a class="btn btn-block btn-default" href="/properties.htm">properties</a>
+    <a class="btn btn-block btn-default" href="/index.htm">main page</a>
     </div>
    </div>
   </div>
