@@ -78,18 +78,24 @@ void handle_swdlight() {
       }
     HTTP.send(200, "text/plain", swnlight);
    }
-
 void handle_set_DlightPin() {           //
-  PinDlight = HTTP.arg("DlightPin").toInt();  // Получаем значение ssidAP из запроса сохраняем в глобальной переменной
-  saveConfig();                         // Функция сохранения данных во Flash пока пустая
-  HTTP.send(200, "text/plain", "OK");   // отправляем ответ о выполнении
+  byte temp_PinDlight = HTTP.arg("DlightPin").toInt(); 
+  if (PinDlight!=temp_PinDlight){
+    PinDlight = temp_PinDlight;                  // Получаем значение DlightPin из запроса сохраняем в глобальной переменной
+    pinMode(PinDlight,OUTPUT);                   // переводим пин DlightPin в режим вывода  
+    saveConfig();                                // Функция сохранения данных во Flash пока пустая
+  }  
+  HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
+ }
+void handle_set_NlightPin() {                    //
+  byte temp_PinNlight = HTTP.arg("NlightPin").toInt(); 
+  if (PinNlight!=temp_PinNlight){
+    PinNlight = HTTP.arg("NlightPin").toInt();  // Получаем значение NlightPin из запроса сохраняем в глобальной переменной
+    pinMode(PinNlight,OUTPUT);                  // переводим пин NlightPin в режим вывода  
+    saveConfig();                               // Функция сохранения данных во Flash пока пустая
+  }
+  HTTP.send(200, "text/plain", "OK");           // отправляем ответ о выполнении
 }
-void handle_set_NlightPin() {           //
-  PinNlight = HTTP.arg("NlightPin").toInt();  // Получаем значение ssidAP из запроса сохраняем в глобальной переменной
-  saveConfig();                         // Функция сохранения данных во Flash пока пустая
-  HTTP.send(200, "text/plain", "OK");   // отправляем ответ о выполнении
-}
-
 void handle_ConfigJSON() {
   String json = "{";  // Формировать строку для отправки в браузер json формат
   //{"SSDP":"SSDP-test","ssid":"home","password":"i12345678","ssidAP":"WiFi","passwordAP":"","ip":"192.168.0.101"}

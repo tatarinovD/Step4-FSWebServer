@@ -8,32 +8,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Страница управления</title>
   <script type="text/javascript">
-   var set_real_time;
-   function Dlight(submit){
-     server = "/swdlight?swdlight=on";
-     send_request(submit,server);
-	 load();
-	 return true;
-	}
-   function Nlight(submit){
-     server = "/swnlight?swnlight=on";
-     send_request(submit,server);
-	 load();
-	 return true;
-	}  
-      
-   function set_DlightPin(submit){
-       
+  var set_real_time;
+  function Dlight(submit){
+    server = "/swdlight?swdlight=on";
+    send_request(submit,server);
+	load();
+	return true;
+  }
+  function Nlight(submit){
+    server = "/swnlight?swnlight=on";
+    send_request(submit,server);
+	load();
+	return true;
+  }  
+  function set_DlightPin(submit){
     server = "/sdlightpin?DlightPin="+val('DlightPin');
     send_request(submit,server);
     alert("пин подключения дневного освещения переназначен.");
-   }
-   function set_NlightPin(submit){
+  }
+  function set_NlightPin(submit){
     server = "/snlightpin?NlightPin="+val('NlightPin');
     send_request(submit,server);
     alert("пин подключения ночного освещения переназначен.");
-   }
-      
+  }
   </script>
  </head>
  <body onload="load();">
