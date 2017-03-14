@@ -25,7 +25,7 @@ String _passwordAP = ""; // пароль точки доступа
 String SSDP_Name = "SendToWeb"; // Имя SSDP
 int timezone = 3;               // часовой пояс GTM
 byte PinDlight = 14;
-byte PinNlight = 15;
+byte PinNlight = 12;
 
 String jsonConfig = "{}";
 
