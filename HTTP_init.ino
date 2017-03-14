@@ -2,13 +2,16 @@ void HTTP_init(void) {
 
   HTTP.on("/configs.json", handle_ConfigJSON); // формирование configs.json страницы для передачи данных в web интерфейс
   // API для устройства
-  HTTP.on("/ssdp", handle_Set_Ssdp);     // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
-  HTTP.on("/ssid", handle_Set_Ssid);     // Установить имя и пароль роутера по запросу вида /ssid?ssid=home2&password=12345678
-  HTTP.on("/ssidap", handle_Set_Ssidap); // Установить имя и пароль для точки доступа по запросу вида /ssidap?ssidAP=home1&passwordAP=8765439
-  HTTP.on("/TimeZone", handle_time_zone);    // Установка времянной зоны по запросу вида http://192.168.0.101/TimeZone?timezone=3
-  HTTP.on("/restart", handle_Restart);   // Перезагрузка модуля по запросу вида /restart?device=ok
-  HTTP.on("/swdlight", handle_swdlight);   // Перезагрузка модуля по запросу вида /swdlight?swdlight=ok
-  HTTP.on("/swnlight", handle_swnlight);   // Перезагрузка модуля по запросу вида /swnlight?swnlight=ok
+  HTTP.on("/ssdp", handle_Set_Ssdp);            // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
+  HTTP.on("/ssid", handle_Set_Ssid);            // Установить имя и пароль роутера по запросу вида /ssid?ssid=home2&password=12345678
+  HTTP.on("/ssidap", handle_Set_Ssidap);        // Установить имя и пароль для точки доступа по запросу вида /ssidap?ssidAP=home1&passwordAP=8765439
+  HTTP.on("/TimeZone", handle_time_zone);       // Установка времянной зоны по запросу вида http://192.168.0.101/TimeZone?timezone=3
+  HTTP.on("/restart", handle_Restart);          // Перезагрузка модуля по запросу вида /restart?device=ok
+  HTTP.on("/swdlight", handle_swdlight);        // Перезагрузка модуля по запросу вида /swdlight?swdlight=ok
+  HTTP.on("/swnlight", handle_swnlight);        // Перезагрузка модуля по запросу вида /swnlight?swnlight=ok
+  HTTP.on("/sdlightpin", handle_set_DlightPin); // Установить пин дневного света /sdlightpin?DlightPin=14
+  HTTP.on("/snlightpin", handle_set_NlightPin); // Установить пин ночного света  /snlightpin?NlightPin=12
+  
   // Запускаем HTTP сервер
   HTTP.begin();
 }
@@ -75,6 +78,17 @@ void handle_swdlight() {
       }
     HTTP.send(200, "text/plain", swnlight);
    }
+
+void handle_set_DlightPin() {           //
+  PinDlight = HTTP.arg("DlightPin").toInt();  // Получаем значение ssidAP из запроса сохраняем в глобальной переменной
+  saveConfig();                         // Функция сохранения данных во Flash пока пустая
+  HTTP.send(200, "text/plain", "OK");   // отправляем ответ о выполнении
+}
+void handle_set_NlightPin() {           //
+  PinNlight = HTTP.arg("NlightPin").toInt();  // Получаем значение ssidAP из запроса сохраняем в глобальной переменной
+  saveConfig();                         // Функция сохранения данных во Flash пока пустая
+  HTTP.send(200, "text/plain", "OK");   // отправляем ответ о выполнении
+}
 
 void handle_ConfigJSON() {
   String json = "{";  // Формировать строку для отправки в браузер json формат
