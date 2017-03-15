@@ -17,6 +17,26 @@ function load(){
   }
  }
 }
+function loadSET(){
+ if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
+  xmlHttp.open('PUT','/settings.json',true);
+  xmlHttp.send(null);
+  xmlHttp.onload = function(e) {
+  jsonResponse=JSON.parse(xmlHttp.responseText);
+  loadBlock();
+  }
+ }
+}
+function loadSTAT(){
+ if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
+  xmlHttp.open('PUT','/state.json',true);
+  xmlHttp.send(null);
+  xmlHttp.onload = function(e) {
+  jsonResponse=JSON.parse(xmlHttp.responseText);
+  loadBlock();
+  }
+ }
+}
 function loadBlock(data2) {
  data2 = JSON.parse(xmlHttp.responseText);
  data = document.getElementsByTagName('body')[0].innerHTML;

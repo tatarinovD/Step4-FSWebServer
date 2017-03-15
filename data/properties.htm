@@ -12,13 +12,13 @@
   function Dlight(submit){
     server = "/swdlight?swdlight=on";
     send_request(submit,server);
-	load();
+	loadSET();
 	return true;
   }
   function Nlight(submit){
     server = "/swnlight?swnlight=on";
     send_request(submit,server);
-	load();
+	loadSET();
 	return true;
   }  
   function set_DlightPin(submit){
@@ -33,7 +33,7 @@
   }
   </script>
  </head>
- <body onload="load();">
+ <body onload="loadSET();">
   <div class="container">
    <div class="row" style="text-align:center;">
     <h1 style="margin:50px;">Страница управления</h1>
@@ -47,19 +47,12 @@
       <input id="NlightPin" value="{{PinNlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина ночного освещения">
       <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
     </div>
-    </div><br><br>
     
-    <div class="row">
-    <div class="col-sm-6">
-      <input id="DlightPin" value="{{PinDlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина дневного освещения">
-      <input class="btn btn-block btn-success" value="Сохранить" onclick="set_DlightPin(this);" type="submit">
-    </div>
-
     </div><br><br>
     <a class="btn btn-block btn-default" href="/setup.htm">setup</a>
     <a class="btn btn-block btn-default" href="/index.htm">main page</a>
     </div>
+    </div>
    </div>
-  </div>
  </body>
 </html>

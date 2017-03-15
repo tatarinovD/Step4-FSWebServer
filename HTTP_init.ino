@@ -1,6 +1,8 @@
 void HTTP_init(void) {
 
   HTTP.on("/configs.json", handle_ConfigJSON); // формирование configs.json страницы для передачи данных в web интерфейс
+  HTTP.on("/settings.json", handle_SettingJSON); // формирование configs.json страницы для передачи данных в web интерфейс
+  HTTP.on("/state.json", handle_StateJSON); // формирование configs.json страницы для передачи данных в web интерфейс
   // API для устройства
   HTTP.on("/ssdp", handle_Set_Ssdp);            // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
   HTTP.on("/ssid", handle_Set_Ssid);            // Установить имя и пароль роутера по запросу вида /ssid?ssid=home2&password=12345678
@@ -11,6 +13,7 @@ void HTTP_init(void) {
   HTTP.on("/swnlight", handle_swnlight);        // Перезагрузка модуля по запросу вида /swnlight?swnlight=ok
   HTTP.on("/sdlightpin", handle_set_DlightPin); // Установить пин дневного света /sdlightpin?DlightPin=14
   HTTP.on("/snlightpin", handle_set_NlightPin); // Установить пин ночного света  /snlightpin?NlightPin=12
+
   
   // Запускаем HTTP сервер
   HTTP.begin();
@@ -61,8 +64,8 @@ void handle_Restart() {
 void handle_swdlight() {
   String swdlight = HTTP.arg("swdlight");          // Получаем значение device из запроса
   if (swdlight == "on") {    
-      byte i = digitalRead(PinDlight); 
-      digitalWrite(PinDlight,!i); 
+      byte i = digitalRead(PinDL); 
+      digitalWrite(PinDL,!i); 
       if (i) swdlight = "выключено";
       else swdlight = "включено";
       }
@@ -71,27 +74,33 @@ void handle_swdlight() {
   void handle_swnlight() {
   String swnlight = HTTP.arg("swnlight");          // Получаем значение device из запроса
   if (swnlight == "on") {    
-      byte i = digitalRead(PinDlight); 
-      digitalWrite(PinDlight,!i); 
+      byte i = digitalRead(PinNL); 
+      digitalWrite(PinNL,!i); 
       if (i) swnlight = "выключено";
       else swnlight = "включено";
       }
     HTTP.send(200, "text/plain", swnlight);
    }
+   
 void handle_set_DlightPin() {           //
-  byte temp_PinDlight = HTTP.arg("DlightPin").toInt(); 
-  if (PinDlight!=temp_PinDlight){
-    PinDlight = temp_PinDlight;                  // Получаем значение DlightPin из запроса сохраняем в глобальной переменной
-    pinMode(PinDlight,OUTPUT);                   // переводим пин DlightPin в режим вывода  
+  byte temp_PinDL = HTTP.arg("DlightPin").toInt(); 
+  if (PinDL!=temp_PinDL){
+    PinDL = temp_PinDL;                  // Получаем значение DlightPin из запроса сохраняем в глобальной переменной
+    EEPROM.write(1, PinDL);
+    EEPROM.commit();
+    pinMode(PinDL,OUTPUT);                   // переводим пин DlightPin в режим вывода  
     saveConfig();                                // Функция сохранения данных во Flash пока пустая
   }  
   HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
  }
+ 
 void handle_set_NlightPin() {                    //
-  byte temp_PinNlight = HTTP.arg("NlightPin").toInt(); 
-  if (PinNlight!=temp_PinNlight){
-    PinNlight = HTTP.arg("NlightPin").toInt();  // Получаем значение NlightPin из запроса сохраняем в глобальной переменной
-    pinMode(PinNlight,OUTPUT);                  // переводим пин NlightPin в режим вывода  
+  byte temp_PinNL = HTTP.arg("NlightPin").toInt(); 
+  if (PinNL!=temp_PinNL){
+    PinNL=temp_PinNL;
+    EEPROM.write(2, PinNL);
+    EEPROM.commit();
+    pinMode(PinNL,OUTPUT);                  // переводим пин NlightPin в режим вывода  
     saveConfig();                               // Функция сохранения данных во Flash пока пустая
   }
   HTTP.send(200, "text/plain", "OK");           // отправляем ответ о выполнении
@@ -120,20 +129,26 @@ void handle_ConfigJSON() {
   // IP устройства
   json += "\",\"ip\":\"";
   json += WiFi.localIP().toString();
-  json += "\"DlightState\":\"";
-  if (digitalRead(PinDlight)) json += "включено";
-  else json += "выключено";
-  json += "\"NlightState\":\"";
-  if (digitalRead(PinNlight)) json += "включено";
-  else json += "выключено";
-  json += "\",\"PinDlight\":\"";
-  json += PinDlight;
-  json += "\",\"PinNlight\":\"";
-  json += PinNlight;
   json += "\"}";
   HTTP.send(200, "text/json", json);
 }
-
-
-
-
+void handle_SettingJSON() {
+  String json = "{";  // Формировать строку для отправки в браузер json формат
+  json += "\",\"PinDlight\":\"";
+  json += PinDL;
+  json += "\",\"PinNlight\":\"";
+  json += PinNL;
+  json += "\"}";
+  HTTP.send(200, "text/json", json);
+}
+void handle_StateJSON() {
+  String json = "{";  // Формировать строку для отправки в браузер json формат
+  json += "\"DLState\":\"";
+  if (digitalRead(PinDL)) json += "включено";
+  else json += "выключено";
+  json += "\"NLState\":\"";
+  if (digitalRead(PinNL)) json += "включено";
+  else json += "выключено";
+  json += "\"}";
+  HTTP.send(200, "text/json", json);
+}

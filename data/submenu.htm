@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" href="/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script type="text/javascript" src="/function.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Страница управления</title>
+  <script type="text/javascript">
+  var set_real_time;
+  function Dlight(submit){
+    server = "/swdlight?swdlight=on";
+    send_request(submit,server);
+	load();
+	return true;
+  }
+  function Nlight(submit){
+    server = "/swnlight?swnlight=on";
+    send_request(submit,server);
+	load();
+	return true;
+  }  
+  function set_DlightPin(submit){
+    server = "/sdlightpin?DlightPin="+val('DlightPin');
+    send_request(submit,server);
+    alert("пин подключения дневного освещения переназначен.");
+  }
+  function set_NlightPin(submit){
+    server = "/snlightpin?NlightPin="+val('NlightPin');
+    send_request(submit,server);
+    alert("пин подключения ночного освещения переназначен.");
+  }
+  </script>
+ </head>
+ <body onload="load();">
+       <table border="1">
+       <tr>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px " value="-" onclick="minus(this);" type="button">
+        </th>
+         <th>
+             <input id="NlightPin" value="{{PinNlight}}" style="width:50px" class="form-control" pattern="[0-9]{1,2}"  >
+        </th>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px" value="+" onclick="plus(this);" type="submit">
+        </th>
+        <th>дневной максимум</th>
+        </tr>
+           <tr>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px " value="-" onclick="minus(this);" type="button">
+        </th>
+         <th>
+             <input id="NlightPin" value="{{PinNlight}}" style="width:50px" class="form-control" pattern="[0-9]{1,2}"  >
+        </th>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px" value="+" onclick="plus(this);" type="submit">
+        </th>
+        <th>дневной минимум</th>
+        </tr>
+           <tr>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px " value="-" onclick="minus(this);" type="button">
+        </th>
+         <th>
+             <input id="NlightPin" value="{{PinNlight}}" style="width:50px" class="form-control" pattern="[0-9]{1,2}"  >
+        </th>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px" value="+" onclick="plus(this);" type="submit">
+        </th>
+        <th>ночной максимум</th>
+        </tr>
+           <tr>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px " value="-" onclick="minus(this);" type="button">
+        </th>
+         <th>
+             <input id="NlightPin" value="{{PinNlight}}" style="width:50px" class="form-control" pattern="[0-9]{1,2}"  >
+        </th>
+        <th>
+          <input class="btn btn-block btn-success" style="width:50px" value="+" onclick="plus(this);" type="submit">
+        </th>
+        <th>ночной минимум</th>
+        </tr>
+        
+      </table>
+
+  
+</body>
+</html>
