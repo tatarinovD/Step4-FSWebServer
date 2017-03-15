@@ -111,13 +111,13 @@ void handle_set_NlightPin() {                    //
 
 void handle_Set_MDataJSON() {                    //
   String smdata = HTTP.arg("smdata"); 
-  if (smdata='ok')DMinTemp--;     
+  if (smdata='ok')DMaxTemp--;     
   HTTP.send(200, "text/plain", "-");           // отправляем ответ о выполнении
 }
 
 void handle_Set_PDataJSON() {                    //
   String spdata = HTTP.arg("spdata"); 
-  if (spdata='ok')DMinTemp++;     
+  if (spdata='ok')DMaxTemp++;     
   HTTP.send(200, "text/plain", "+");           // отправляем ответ о выполнении
 }
 
@@ -163,7 +163,7 @@ void handle_StateJSON() {
   json += "\"DLState\":\"";
   if (digitalRead(PinDL)) json += "включено";
   else json += "выключено";
-  json += "\"NLState\":\"";
+  json += "\",\"NLState\":\"";
   if (digitalRead(PinNL)) json += "включено";
   else json += "выключено";
   json += "\"}";
@@ -173,39 +173,39 @@ void handle_DataJSON() {
   String json = "{";  // Формировать строку для отправки в браузер json формат
   json += "\"DMinTemp\":\"";
   json += DMinTemp;
-  json += "\"DMaxTemp\":\"";
+  json += "\",\"DMaxTemp\":\"";
   json += DMaxTemp;
-  json += "\"NMinTemp\":\"";
+  json += "\",\"NMinTemp\":\"";
   json += NMinTemp;
-  json += "\"NMaxTemp\":\"";
+  json += "\",\"NMaxTemp\":\"";
   json += NMaxTemp;
-  json += "\"HMinTemp\":\"";
+  json += "\",\"HMinTemp\":\"";
   json += HMinTemp;
-  json += "\"HMaxTemp\":\"";
+  json += "\",\"HMaxTemp\":\"";
   json += HMaxTemp;
-  json += "\"DMinTemp\":\"";
-  json += DMinTemp;
-  json += "\"DMaxTemp\":\"";
-  json += DMaxTemp;
-  json += "\"DDHMinTemp\":\"";
+  json += "\",\"DDHMinTemp\":\"";
   json += DDHMinTemp;
-  json += "\"DDHMaxTemp\":\"";
-  json += DDHMaxTemp;
-  json += "\"NDHMinTemp\":\"";
-  json += NDHMinTemp;
-  json += "\"DMaxTemp\":\"";
+  json += "\",\"DMaxTemp\":\"";
   json += DMaxTemp;
-  json += "\"NDHMaxTemp\":\"";
+  json += "\",\"DDHMinTemp\":\"";
+  json += DDHMinTemp;
+  json += "\",\"DDHMaxTemp\":\"";
+  json += DDHMaxTemp;
+  json += "\",\"NDHMinTemp\":\"";
+  json += NDHMinTemp;
+  json += "\",\"NDHMinTemp\":\"";
+  json += NDHMinTemp;
+  json += "\",\"NDHMaxTemp\":\"";
   json += NDHMaxTemp;
-  json += "\"UWMinLevel\":\"";
+  json += "\",\"UWMinLevel\":\"";
   json += UWMinLevel;
-  json += "\"NUWMinLevel\":\"";
+  json += "\",\"NUWMinLevel\":\"";
   json += NUWMinLevel;
-  json += "\"NUWMaxLevel\":\"";
+  json += "\",\"NUWMaxLevel\":\"";
   json += NUWMaxLevel;
-  json += "\"BeginDay\":\"";
+  json += "\",\"BeginDay\":\"";
   json += BeginDay;
-  json += "\"EndDay\":\"";
+  json += "\",\"EndDay\":\"";
   json += EndDay;
   json += "\"}";
   HTTP.send(200, "text/json", json);

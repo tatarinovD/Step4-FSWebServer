@@ -26,7 +26,6 @@ function loadSET(){
   loadBlock();
   }
  }
-    setTimeout('loadSET()',1000);
 }
 function loadSTAT(){
  if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
@@ -37,8 +36,7 @@ function loadSTAT(){
   loadBlock();
   }
  }
-  setTimeout('loadSTAT()',1000);   
-}
+ }
 function loadDATA(){
  if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
   xmlHttp.open('PUT','/data.json',true);
@@ -48,9 +46,6 @@ function loadDATA(){
   loadBlock();
   }
  }
-setTimeout('loadSTAT()',1000);  
-}
-
 
 function loadBlock(data2) {
  data2 = JSON.parse(xmlHttp.responseText);

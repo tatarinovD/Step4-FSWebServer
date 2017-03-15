@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Страница управления</title>
   <script type="text/javascript">
+ 
   function minus(submit){
     server = "/smdata?smdata=ok";
     send_request(submit,server);
@@ -31,7 +32,7 @@
           <input class="btn" style="width:50px " value="-" onclick="minus(this);" type="button">
         </th>
          <th>
-           <h4 class="alert-info" id="DMaxTemp">{{DMaxTemp}}</h4>
+           <h4 class="alert-info">{{DMaxTemp}}</h4>
         </th>
         <th>
           <input class="btn" style="width:50px" value="+" onclick="plus(this);" type="submit">
