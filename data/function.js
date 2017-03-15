@@ -16,7 +16,6 @@ function load(){
   loadBlock();
   }
  }
- setTimeout('load()',1000);
 }
 function loadSET(){
  if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
