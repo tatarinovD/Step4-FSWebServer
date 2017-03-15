@@ -17,7 +17,6 @@ IPAddress apIP(192, 168, 4, 1);
 ESP8266WebServer HTTP(80);
 // Для файловой системы
 File fsUploadFile;
-
 // Определяем переменные wifi
 String _ssid     = "d-net.kiev.ua"; // Для хранения SSID
 String _password = "098765432154321"; // Для хранения пароля сети

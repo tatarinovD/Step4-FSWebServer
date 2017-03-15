@@ -4,8 +4,8 @@ void HTTP_init(void) {
   HTTP.on("/settings.json", handle_SettingJSON); 
   HTTP.on("/state.json", handle_StateJSON); 
   HTTP.on("/data.json", handle_DataJSON); 
-  HTTP.on("/smdata.json", handle_Set_MDataJSON); 
-  HTTP.on("/spdata.json", handle_Set_PDataJSON); 
+  HTTP.on("/smdata", handle_Set_MDataJSON); 
+  HTTP.on("/spdata", handle_Set_PDataJSON); 
   // API для устройства
   HTTP.on("/ssdp", handle_Set_Ssdp);            // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
   HTTP.on("/ssid", handle_Set_Ssid);            // Установить имя и пароль роутера по запросу вида /ssid?ssid=home2&password=12345678
@@ -112,13 +112,13 @@ void handle_set_NlightPin() {                    //
 void handle_Set_MDataJSON() {                    //
   String smdata = HTTP.arg("smdata"); 
   if (smdata='ok')DMinTemp--;     
- // HTTP.send(200, "text/plain", "OK");           // отправляем ответ о выполнении
+  HTTP.send(200, "text/plain", "-");           // отправляем ответ о выполнении
 }
 
 void handle_Set_PDataJSON() {                    //
   String spdata = HTTP.arg("spdata"); 
   if (spdata='ok')DMinTemp++;     
- // HTTP.send(200, "text/plain", "OK");           // отправляем ответ о выполнении
+  HTTP.send(200, "text/plain", "+");           // отправляем ответ о выполнении
 }
 
 
