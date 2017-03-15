@@ -117,7 +117,9 @@ void handle_Set_MDataJSON() {                    //
 
 void handle_Set_PDataJSON() {                    //
   String spdata = HTTP.arg("spdata"); 
-  if (spdata='ok')DMaxTemp++;     
+  Serial.println(DMaxTemp) ;
+  if (spdata='ok')DMaxTemp++;   
+  Serial.println(DMaxTemp) ; 
   HTTP.send(200, "text/plain", "+");           // отправляем ответ о выполнении
 }
 
