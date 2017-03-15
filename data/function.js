@@ -16,6 +16,7 @@ function load(){
   loadBlock();
   }
  }
+ setTimeout('load()',1000);
 }
 function loadSET(){
  if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
@@ -26,6 +27,7 @@ function loadSET(){
   loadBlock();
   }
  }
+    setTimeout('loadSET()',1000);
 }
 function loadSTAT(){
  if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
@@ -36,6 +38,7 @@ function loadSTAT(){
   loadBlock();
   }
  }
+  setTimeout('loadSTAT()',1000);   
 }
 function loadBlock(data2) {
  data2 = JSON.parse(xmlHttp.responseText);
