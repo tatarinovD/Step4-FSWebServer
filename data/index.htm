@@ -21,19 +21,16 @@
 	loadSTAT();
 	return true;
   }    
-    
   function set_DlightPin(submit){
     server = "/sdlightpin?DlightPin="+val('DlightPin');
     send_request(submit,server);
     alert("пин подключения дневного освещения переназначен.");
   }
-      
   function set_NlightPin(submit){
     server = "/snlightpin?NlightPin="+val('NlightPin');
     send_request(submit,server);
     alert("пин подключения ночного освещения переназначен.");
   }
-  
   </script>
  </head>
  <body onload="loadSTAT();">

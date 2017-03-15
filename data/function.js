@@ -40,6 +40,19 @@ function loadSTAT(){
  }
   setTimeout('loadSTAT()',1000);   
 }
+function loadDATA(){
+ if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
+  xmlHttp.open('PUT','/data.json',true);
+  xmlHttp.send(null);
+  xmlHttp.onload = function(e) {
+  jsonResponse=JSON.parse(xmlHttp.responseText);
+  loadBlock();
+  }
+ }
+setTimeout('loadSTAT()',1000);  
+}
+
+
 function loadBlock(data2) {
  data2 = JSON.parse(xmlHttp.responseText);
  data = document.getElementsByTagName('body')[0].innerHTML;
