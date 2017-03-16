@@ -22,12 +22,12 @@
 	return true;
   }  
   function set_DlightPin(submit){
-    server = "/sdlightpin?DlightPin="+val('DlightPin');
+    server = "/sdlightpin?DlightPin="+val('PinDlight');
     send_request(submit,server);
     alert("пин подключения дневного освещения переназначен.");
   }
   function set_NlightPin(submit){
-    server = "/snlightpin?NlightPin="+val('NlightPin');
+    server = "/snlightpin?NlightPin="+val('PinNlight');
     send_request(submit,server);
     alert("пин подключения ночного освещения переназначен.");
   }
@@ -40,11 +40,11 @@
     <div class="col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-5">
     <div class="row">
     <div class="col-sm-6">
-      <input id="PinDlight" value="{{PinDlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина дневного освещения">
+      <input id="pinDlight" value="{{PinDlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина дневного освещения">
       <input class="btn btn-block btn-success" value="Сохранить" onclick="set_DlightPin(this);" type="submit">
     </div>
     <div class="col-sm-6">
-      <input id="PinNlight" value="{{PinNlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина ночного освещения">
+      <input id="pinNlight" value="{{PinNlight}}" class="form-control" pattern="[0-9]{1,2}" placeholder="номер пина ночного освещения">
       <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
     </div>
     
