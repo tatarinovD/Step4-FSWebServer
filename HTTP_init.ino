@@ -11,7 +11,6 @@ void HTTP_init(void) {
   HTTP.on("/ssidap", handle_Set_Ssidap);        // Установить имя и пароль для точки доступа по запросу вида /ssidap?ssidAP=home1&passwordAP=8765439
   HTTP.on("/TimeZone", handle_time_zone);       // Установка времянной зоны по запросу вида http://192.168.0.101/TimeZone?timezone=3
   HTTP.on("/restart", handle_Restart);          // Перезагрузка модуля по запросу вида /restart?device=ok
-  
   HTTP.on("/swdlight", handle_swdlight);        // Перезагрузка модуля по запросу вида /swdlight?swdlight=ok
   HTTP.on("/swnlight", handle_swnlight);        // Перезагрузка модуля по запросу вида /swnlight?swnlight=ok
   
@@ -97,7 +96,7 @@ void handle_set_DlightPin() {           //
     EEPROM.write(1, PinDL);
     EEPROM.commit();
     pinMode(PinDL,OUTPUT);                   // переводим пин DlightPin в режим вывода  
-    saveConfig();                                // Функция сохранения данных во Flash пока пустая
+                                // Функция сохранения данных во Flash пока пустая
   }  
   HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
  }
@@ -109,7 +108,7 @@ void handle_set_NlightPin() {                    //
     EEPROM.write(2, PinNL);
     EEPROM.commit();
     pinMode(PinNL,OUTPUT);                  // переводим пин NlightPin в режим вывода  
-    saveConfig();                               // Функция сохранения данных во Flash пока пустая
+                               // Функция сохранения данных во Flash пока пустая
   }
   HTTP.send(200, "text/plain", "OK");           // отправляем ответ о выполнении
 }

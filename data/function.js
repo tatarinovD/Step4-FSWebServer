@@ -48,8 +48,10 @@ function loadDATA(){
  }
 }
 function loadBlock(data2) {
- data2 = JSON.parse(xmlHttp.responseext);
- data = document.getElementsByTagName('body')[0].innerHTML;
+ //data2 = JSON.parse(xmlHttp.responseext);
+ //data = document.getElementsByTagName('body')[0].innerHTML;
+ var data2 = JSON.parse(xmlHttp.responseext);
+ vat data = document.getElementsByTagName('body')[0].innerHTML;
  var new_string;
 for (var key in data2) {
  new_string = data.replace(new RegExp('{{'+key+'}}', 'g'), data2[key]);

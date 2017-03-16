@@ -27,6 +27,8 @@ int timezone = 3;               // часовой пояс GTM
 String jsonConfig = "{}";
 String jsonSettings = "{}";
 String jsonState = "{}";
+String jsonData = "{}";
+
 byte ManualMod;
 byte PreManualMod;
 byte PinDL;
