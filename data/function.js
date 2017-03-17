@@ -48,8 +48,6 @@ function loadDATA(){
  }
 }
 function loadBlock(data2) {
- //data2 = JSON.parse(xmlHttp.responseext);
- //data = document.getElementsByTagName('body')[0].innerHTML;
  data2 = JSON.parse(xmlHttp.responseText);
  data = document.getElementsByTagName('body')[0].innerHTML;
  var new_string;
