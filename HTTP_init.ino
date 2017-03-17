@@ -13,11 +13,8 @@ void HTTP_init(void) {
   HTTP.on("/restart", handle_Restart);          // Перезагрузка модуля по запросу вида /restart?device=ok
   HTTP.on("/swdlight", handle_swdlight);        // Перезагрузка модуля по запросу вида /swdlight?swdlight=ok
   HTTP.on("/swnlight", handle_swnlight);        // Перезагрузка модуля по запросу вида /swnlight?swnlight=ok
-  
   HTTP.on("/sdlightpin", handle_set_DlightPin); // Установить пин дневного света /sdlightpin?DlightPin=14
   HTTP.on("/snlightpin", handle_set_NlightPin); // Установить пин ночного света  /snlightpin?NlightPin=12
-
-  
   // Запускаем HTTP сервер
   HTTP.begin();
 }
@@ -68,15 +65,13 @@ void handle_swdlight() {
   String swdlight = HTTP.arg("swdlight");          // Получаем значение device из запроса
   if (swdlight == "on") {    
       byte i = digitalRead(PinDL); 
-      Serial.println(PinDL);
       digitalWrite(PinDL,!i); 
-      Serial.println(); 
-      if (i){ swdlight = "выключено";
+      /*if (i){ swdlight = "выключено";
       Serial.println(swdlight); }
       else {swdlight = "включено";
-      Serial.println(swdlight); }
+      Serial.println(swdlight); }*/
       }
-    HTTP.send(200, "text/plain", swdlight);
+    HTTP.send(200, "text/plain", "обрабатывается");
    }
   void handle_swnlight() {
   String swnlight = HTTP.arg("swnlight");          // Получаем значение device из запроса

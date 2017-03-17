@@ -8,16 +8,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Страница управления</title>
   <script type="text/javascript">
+  var set_real_time;
+  function handleServerResponse(){
+   }
   function Dlight(submit){
     server = "/swdlight?swdlight=on";
     send_request(submit,server);
-	loadSTAT();
+	//loadSTAT();
 	return true;
   }
   function Nlight(submit){
     server = "/swnlight?swnlight=on";
     send_request(submit,server);
-	loadSTAT();
+	//loadSTAT();
 	return true;
   }    
   </script>
@@ -25,15 +28,22 @@
  <body onload="loadSTAT();">
   <div class="container">
    <div class="row" style="text-align:center;">
-    <h1 style="margin:50px;">Страница управления</h1>
-    <div class="col-sm-offset-2 col-sm-8">
-    <table border="0" style="width:150px;height:150px;">
-       <tr>
+    <div class="col-sm-offset-2 col-sm-8"><br>
+    <table border="0" style="width:100%;">
+        <tr>
+          <th> 
+           <h5 class="alert-info" style="width:100%;" id="ssdp_t">dd/mm/yyy</h5>
+          </th>
+          <th> 
+           <h5 class="alert-info" style="width:100%;" id="ssdp_t">Day or Night</h5>
+          </th>
+        </tr>
+        <tr>
         <th>
-          <input type="submit" id="dLState" style="text-align:center; width:150px; height:150px" class="btn btn-block" value="{{DLState}}" onclick="Dlight(this);" >
+          <input type="submit" id="dLState" style="text-align:center; width:100%; height:150px" class="btn btn-block" value="{{DLState}}" onclick="Dlight(this);" >
         </th>
-        <th>
-          <input type="submit" id='nLState'  style="text-align:center;width:150px;height:150px" class="btn btn-block" value="{{NLState}}" onclick="Nlight(this);" >
+        <th style="width:50%;">
+          <input type="submit" id='nLState'  style="text-align:center;width:100%;height:150px" class="btn btn-block" value="{{NLState}}" onclick="Nlight(this);" >
         </th>
         </tr>
       </table>
