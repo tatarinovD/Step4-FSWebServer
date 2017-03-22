@@ -8,34 +8,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Страница управления</title>
   <script type="text/javascript">
+  function handleServerResponse(){
+   }
  
-  function minus(submit){
-    server = "/smdata?smdata=ok";
+  function CHange(submit){
+    server = "/changedata?action=";
     send_request(submit,server);
-	loadDATA();
 	return true;
   }  
-  
-  function plus(submit){
-    server = "/spdata?spdata=ok";
-    send_request(submit,server);
-	loadDATA();
-	return true;
-  }  
-  
   </script>
  </head>
  <body onload="loadDATA();">
        <table border="1">
        <tr>
         <th>
-          <input type="submit" style="text-align:center;width:50px " class="btn btn-block btn-default" value="-" onclick="minus(this);" >
+          <input type="submit" id="minus" name="DMaxTemp"   src="minus.png"  style="text-align:center;width:50px " class="btn btn-block btn-default" value="dMaxTemp_minus" onclick="CHange(this);" >
         </th>
          <th>
            <h4 id="dMaxTemp" class="alert-info" >{{DMaxTemp}}</h4>
         </th>
         <th>
-          <input type="submit" style="text-align:center;width:50px " class="btn btn-block btn-default" value="+" onclick="plus(this);" >
+          <input type="submit" id="+" style="text-align:center;width:50px " class="btn btn-block btn-default" value="+" onclick="CHange(this);" >
         </th>
         <th>дневной максимум</th>
         </tr>

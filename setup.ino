@@ -10,10 +10,10 @@ void setup() {
   PinDH = EEPROM.read(4); // пин подключения реле нижнего подогрева 
   PinH  = EEPROM.read(5); // пин подключения реле увлажнителья воздуха 
   PinDT = EEPROM.read(6); // пин подключения цифрового датчика темпиратуры DS18B20 
-  DMinTemp = EEPROM.read(7);  //дневной минимум темпиратуры
-  DMaxTemp = EEPROM.read(8);  //дневной максимум темпиратуры
-  NMinTemp = EEPROM.read(9);  //ночной минимум темпиратуры
-  NMaxTemp = EEPROM.read(10);  //ночной максимум темпиратуры
+  DMinTemp = EEPROM.read(7);  //дневной минимум температуры
+  DMaxTemp = EEPROM.read(8);  //дневной максимум температуры
+  NMinTemp = EEPROM.read(9);  //ночной минимум температуры
+  NMaxTemp = EEPROM.read(10);  //ночной максимум температуры
   HMinTemp = EEPROM.read(11);  //минимальное значение влажности 
   HMaxTemp = EEPROM.read(12);  //максимальное значение влажности 
   DDHMinTemp = EEPROM.read(13); //дневной минимум температуры нижнего подогрева
@@ -21,12 +21,17 @@ void setup() {
   NDHMinTemp = EEPROM.read(15); //ночной минимум температуры нижнего подогрева
   NDHMaxTemp = EEPROM.read(16); //ночной максимум температуры нижнего подогрева
   UWMinLevel = EEPROM.read(17); //минимальное значение УФ излучения от лампы дневного света 
-  BeginDay = EEPROM.read(18); //начало светового дня 
-  EndDay = EEPROM.read(19); //окончание светового дня 
+  BeginDay  = EEPROM.read(18); //начало светового дня 
+  EndDay    = EEPROM.read(19); //окончание светового дня 
   NUWMinLevel = EEPROM.read(20); //минимальное значение УФ для включения лампы ночного света 
   NUWMaxLevel = EEPROM.read(21); //минимальное значение УФ для вкылючения лампы ночного света 
   pinMode(PinDL,OUTPUT);
+  pinMode(PinH,OUTPUT);
   pinMode(PinNL,OUTPUT);
+  pinMode(PinDT,OUTPUT);
+  Wire.begin(4, 5); // определяем пины L2C (D2,D1)
+  myHumidity.begin();
+  RTC.begin();//  Активация часов 
   
   Serial.println("");
   //Запускаем файловую систему

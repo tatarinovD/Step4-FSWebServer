@@ -5,6 +5,7 @@ void HTTP_init(void) {
   HTTP.on("/data.json", handle_DataJSON); 
   HTTP.on("/smdata", handle_Set_MDataJSON); 
   HTTP.on("/spdata", handle_Set_PDataJSON); 
+  HTTP.on("/changedata", handle_Set_CHangeData); 
   // API для устройства
   HTTP.on("/ssdp", handle_Set_Ssdp);            // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
   HTTP.on("/ssid", handle_Set_Ssid);            // Установить имя и пароль роутера по запросу вида /ssid?ssid=home2&password=12345678
@@ -20,6 +21,16 @@ void HTTP_init(void) {
 }
 // Функции API-Set
 // Установка SSDP имени по запросу вида http://192.168.0.101/ssdp?ssdp=proba
+
+void handle_Set_CHangeData(){
+  String CHangeAction = HTTP.arg("action");
+  String CHangeData = HTTP.arg("action");
+  Serial.println(CHangeAction);
+  Serial.println(CHangeData); 
+  
+  
+}
+
 void handle_Set_Ssdp() {
   SSDP_Name = HTTP.arg("ssdp"); // Получаем значение ssdp из запроса сохраняем в глобальной переменной
   saveConfig();                 // Функция сохранения данных во Flash пока пустая
@@ -64,8 +75,7 @@ void handle_Restart() {
 void handle_swdlight() {
   String swdlight = HTTP.arg("swdlight");          // Получаем значение device из запроса
   if (swdlight == "on") {    
-      byte i = digitalRead(PinDL); 
-      digitalWrite(PinDL,!i); 
+      digitalWrite(PinDL,!digitalRead(PinDL)); 
       /*if (i){ swdlight = "выключено";
       Serial.println(swdlight); }
       else {swdlight = "включено";
@@ -116,9 +126,7 @@ void handle_Set_MDataJSON() {                    //
 
 void handle_Set_PDataJSON() {                    //
   String spdata = HTTP.arg("spdata"); 
-  //Serial.println(DMaxTemp) ;
   if (spdata='ok')DMaxTemp++;   
-  //Serial.println(DMaxTemp) ; 
   HTTP.send(200, "text/plain", "+");           // отправляем ответ о выполнении
 }
 
@@ -167,6 +175,22 @@ void handle_StateJSON() {
   json += "\",\"NLState\":\"";
   if (digitalRead(PinNL)) json += "включено";
   else json += "выключено";
+  json += "\",\"UWLevel\":\"";
+  json += UWLevel;
+  json += "\",\"Humd\":\"";
+  json += Humd;
+  json += "\",\"Temp\":\"";
+  json += Temp;
+  json += "\",\"Year\":\"";
+  json += now.year();
+  json += "\",\"Month\":\"";
+  json += now.month();
+  json += "\",\"Day\":\"";
+  json += now.day();
+  json += "\",\"Hour\":\"";
+  json += now.hour();
+  json += "\",\"Minute\":\"";
+  json += now.minute();
   json += "\"}";
   HTTP.send(200, "text/json", json);
 }

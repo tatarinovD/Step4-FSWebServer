@@ -8,6 +8,16 @@
 #include <ESP8266WebServer.h>   //Содержится в пакете. Видео с уроком http://esp8266-arduinoide.ru/step2-webserver
 #include <ESP8266SSDP.h>        //Содержится в пакете. Видео с уроком http://esp8266-arduinoide.ru/step3-ssdp
 #include <FS.h>                 //Содержится в пакете. Видео с уроком http://esp8266-arduinoide.ru/step4-fswebserver
+#include "Adafruit_VEML6070.h"
+#include <Wire.h>
+#include "RTClib.h"
+#include "HTU21D.h"
+
+
+RTC_DS1307 RTC; //работат с реалтайм часами 
+Adafruit_VEML6070 uv = Adafruit_VEML6070(); //обьявляем раобту с датчиком ультрафиолета 
+HTU21D myHumidity; //обьект работы с датчиком темпиратуры и влажности 
+
 //                    ПЕРЕДАЧА ДАННЫХ НА WEB СТРАНИЦУ. Видео с уроком http://esp8266-arduinoide.ru/step5-datapages/
 //                    ПЕРЕДАЧА ДАННЫХ С WEB СТРАНИЦЫ.  Видео с уроком http://esp8266-arduinoide.ru/step6-datasend/
 #include <ArduinoJson.h>        //Установить из менеджера библиотек.
@@ -18,6 +28,8 @@ ESP8266WebServer HTTP(80);
 // Для файловой системы
 File fsUploadFile;
 // Определяем переменные wifi
+long previousMillis = 5000; // частота опроса датчиков 
+long interval = 5000; // интервал опроса часов
 String _ssid     = "d-net.kiev.ua"; // Для хранения SSID
 String _password = "098765432154321"; // Для хранения пароля сети
 String _ssidAP = "WiFi";   // SSID AP точки доступа
@@ -28,6 +40,9 @@ String jsonConfig = "{}";
 String jsonSettings = "{}";
 String jsonState = "{}";
 String jsonData = "{}";
+float Humd ;
+float Temp ;
+DateTime now;
 
 byte ManualMod;
 byte PreManualMod;
@@ -48,6 +63,7 @@ byte DDHMaxTemp;
 byte NDHMinTemp;
 byte NDHMaxTemp;
 byte UWMinLevel;
+byte UWLevel;
 byte BeginDay;
 byte EndDay;
 byte NUWMinLevel;
@@ -61,6 +77,14 @@ byte HState;
 void loop() {
   HTTP.handleClient();
   delay(1);
+  unsigned long currentMillis = millis();
+  if(currentMillis - previousMillis > interval) {
+    previousMillis = currentMillis;
+    UWLevel = uv.readUV();
+    Humd = myHumidity.readHumidity();
+    Temp = myHumidity.readTemperature();
+    now = RTC.now(); //считываение параметров часов     
+    }  
 }
 
 
