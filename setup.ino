@@ -2,18 +2,10 @@ void setup() {
   EEPROM.begin(40);//текущее значени 30 макс колличество переменных 512
   Serial.begin(115200);
   ManualMod = EEPROM.read(0); // режим работы контроллера 0- авто 1- ручной 
-  PinDL = EEPROM.read(1); // пин подключения реле лампы дневного света 
-  Serial.println(PinDL);
-  PinNL = EEPROM.read(2); // пин подключения реле лампы ночного света  
-  Serial.println(PinNL);
-  PinUH = EEPROM.read(3); // пин подключения реле верхнего подогрева   
-  PinDH = EEPROM.read(4); // пин подключения реле нижнего подогрева 
-  PinH  = EEPROM.read(5); // пин подключения реле увлажнителья воздуха 
-  PinDT = EEPROM.read(6); // пин подключения цифрового датчика темпиратуры DS18B20 
   DMinTemp = EEPROM.read(7);  //дневной минимум температуры
   DMaxTemp = EEPROM.read(8);  //дневной максимум температуры
   NMinTemp = EEPROM.read(9);  //ночной минимум температуры
-  NMaxTemp = EEPROM.read(10);  //ночной максимум температуры
+  NMaxTemp = EEPROM.read(10);  //ночной максимум темпиратуры
   HMinTemp = EEPROM.read(11);  //минимальное значение влажности 
   HMaxTemp = EEPROM.read(12);  //максимальное значение влажности 
   DDHMinTemp = EEPROM.read(13); //дневной минимум температуры нижнего подогрева
@@ -26,9 +18,10 @@ void setup() {
   NUWMinLevel = EEPROM.read(20); //минимальное значение УФ для включения лампы ночного света 
   NUWMaxLevel = EEPROM.read(21); //минимальное значение УФ для вкылючения лампы ночного света 
   pinMode(PinDL,OUTPUT);
-  pinMode(PinH,OUTPUT);
   pinMode(PinNL,OUTPUT);
-  pinMode(PinDT,OUTPUT);
+  pinMode(PinUH,OUTPUT);
+  pinMode(PinDH,OUTPUT);
+  pinMode(PinH,OUTPUT);
   Wire.begin(4, 5); // определяем пины L2C (D2,D1)
   myHumidity.begin();
   RTC.begin();//  Активация часов 

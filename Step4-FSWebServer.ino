@@ -46,12 +46,12 @@ DateTime now;
 
 byte ManualMod;
 byte PreManualMod;
-byte PinDL;
-byte PinNL;
-byte PinUH;
-byte PinDH;
-byte PinH;
-byte PinDT;
+byte PinDL=14;
+byte PinNL=12;
+byte PinUH=13;
+byte PinDH=3;
+byte PinH=2;
+byte PinDT=0;
 byte DMinTemp;
 byte DMaxTemp;
 byte NMinTemp;

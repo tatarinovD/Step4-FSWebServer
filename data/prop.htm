@@ -6,97 +6,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Страница управления</title>
   <script type="text/javascript">
-  var set_real_time;
-  function Dlight(submit){
-    server = "/swdlight?swdlight=on";
-    send_request(submit,server);
-	loadSET();
-	return true;
-  }
-  function Nlight(submit){
-    server = "/swnlight?swnlight=on";
-    send_request(submit,server);
-	loadSET();
-	return true;
-  }  
-  function set_DlightPin(submit){
-    server = "/sdlightpin?DlightPin="+val('PinDlight');
-    send_request(submit,server);
-    alert("пин подключения дневного освещения переназначен.");
-  }
-  function set_NlightPin(submit){
-    server = "/snlightpin?NlightPin="+val('PinNlight');
-    send_request(submit,server);
-    alert("пин подключения ночного освещения переназначен.");
-  }
-  </script>
+ 
+function set(submit) {
+    //server = "/set?button="+submit.id+"&data="+elem+"&eeprom="+submit.name;
+    //var elem = document.getElementById(submit.id+"Id").value;
+    server = "/set?button="+submit.id+"&data="+val(submit.id+"Id")+"&eeprom="+submit.name;
+    alert(server);
+    send_request(submit,server);   
+}           
+            
+</script>
  </head>
- <body onload="loadSET();">
+ <body onload="loadDATA();">
        <table border="0">
-        <tr>
-         <th style="text-align:left;"> 
-           PIN - дневного света "PinDL" 
-         </th> 
-        <th>         
-          <input id="PinDL" value="{{PinDL}}"  pattern="[0-9]{1,2}">
-        </th>
-        <th>
-        <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
-           </th>
-        </tr>   
-        <tr>
-         <th style="text-align:left;">  
-           PIN - ночного света "PinNL" 
-         </th> 
-        <th>         
-          <input id="PinNL" value="{{PinNL}}"  pattern="[0-9]{1,2}">
-        </th>
-        <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
-        </th>
-        </tr>   
-        <tr>
-         <th style="text-align:left;">  
-           PIN - верхнего подогрева "PinUH" 
-         </th> 
-        <th>         
-          <input id="PinUH" value="{{PinUH}}"  pattern="[0-9]{1,2}">
-        </th>
-        <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
-           </th>
-        </tr> 
-          <tr>
-         <th style="text-align:left;">  
-           PIN - нижнего подогрева "PinDH" 
-         </th> 
-        <th>         
-          <input id="PinDH" value="{{PinDH}}"  pattern="[0-9]{1,2}">
-        </th>
-        <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
-           </th>
-        </tr>  
-        <tr>
-         <th style="text-align:left;">  
-           PIN - увлажнителя воздуха "PinH" 
-         </th> 
-        <th>         
-          <input id="PinH" value="{{PinH}}"  pattern="[0-9]{1,2}">
-        </th>
-        <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
-           </th>
-         </tr>  
-        <tr>
+      <tr>
         <th style="text-align:left;">  
           Начало светового дня "BeginDay" 
         </th> 
         <th>         
-          <input id="BeginDay" value="{{BeginDay}}"  pattern="[0-9]{1,2}">
+          <input id="BeginDayId" value="{{BeginDay}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+          <input class="btn btn-block btn-success" value="Сохранить" onclick="set(this);" type="submit">
            </th>
         </tr>  
         <tr>
@@ -104,7 +35,7 @@
            Конец светового дня "EndDay" 
          </th> 
         <th>         
-          <input id="EndDay" value="{{EndDay}}"  pattern="[0-9]{1,2}">
+          <input id="EndDayId" value="{{EndDay}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
           <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
@@ -115,10 +46,10 @@
            Дневной минимум температуры "DMinTemp" 
          </th> 
         <th>         
-          <input id="DMinTemp"  value="{{DMinTemp}}"  pattern="[0-9]{1,2}">
+          <input id="DMinTempId"  value="{{DMinTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-        <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+        <input type="submit" id="DMinTemp" name="7" value="Сохранить" onclick="set(this);">
            </th>
         </tr>
         <tr>
@@ -126,10 +57,10 @@
            Дневной максимум температуры "DMaxTemp" 
          </th> 
         <th>         
-          <input id="DMaxTemp"  value="{{DMaxTemp}}"  pattern="[0-9]{1,2}">
+          <input id="DMaxTempId"  value="{{DMaxTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+          <input type="submit" id="DMaxTemp" name="8" value="Сохранить" onclick="set(this);" >
         </th>
         </tr>   
          <tr>

@@ -3,8 +3,7 @@ void HTTP_init(void) {
   HTTP.on("/settings.json", handle_SettingJSON); 
   HTTP.on("/state.json", handle_StateJSON); 
   HTTP.on("/data.json", handle_DataJSON); 
-  HTTP.on("/smdata", handle_Set_MDataJSON); 
-  HTTP.on("/spdata", handle_Set_PDataJSON); 
+  HTTP.on("/set", handle_Set_SetJSON); 
   HTTP.on("/changedata", handle_Set_CHangeData); 
   // API для устройства
   HTTP.on("/ssdp", handle_Set_Ssdp);            // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
@@ -14,21 +13,58 @@ void HTTP_init(void) {
   HTTP.on("/restart", handle_Restart);          // Перезагрузка модуля по запросу вида /restart?device=ok
   HTTP.on("/swdlight", handle_swdlight);        // Перезагрузка модуля по запросу вида /swdlight?swdlight=ok
   HTTP.on("/swnlight", handle_swnlight);        // Перезагрузка модуля по запросу вида /swnlight?swnlight=ok
-  HTTP.on("/sdlightpin", handle_set_DlightPin); // Установить пин дневного света /sdlightpin?DlightPin=14
-  HTTP.on("/snlightpin", handle_set_NlightPin); // Установить пин ночного света  /snlightpin?NlightPin=12
-  // Запускаем HTTP сервер
+ // Запускаем HTTP сервер
   HTTP.begin();
 }
 // Функции API-Set
 // Установка SSDP имени по запросу вида http://192.168.0.101/ssdp?ssdp=proba
+
+void handle_swdlight() {
+  String swdlight = HTTP.arg("swdlight");          // Получаем значение device из запроса
+  if (swdlight == "on") {    
+      byte i = digitalRead(PinDL); 
+      digitalWrite(PinDL,!i); 
+      if (i) swdlight = "выключено";
+      else swdlight = "включено";
+      }
+    HTTP.send(200, "text/plain", swdlight);
+   }
+  void handle_swnlight() {
+  String swnlight = HTTP.arg("swnlight");          // Получаем значение device из запроса
+  if (swnlight == "on") {    
+      byte i = digitalRead(PinNL); 
+      digitalWrite(PinNL,!i); 
+      if (i) swnlight = "выключено";
+      else swnlight = "включено";
+      }
+    HTTP.send(200, "text/plain", swnlight);
+   }
 
 void handle_Set_CHangeData(){
   String CHangeAction = HTTP.arg("action");
   String CHangeData = HTTP.arg("action");
   Serial.println(CHangeAction);
   Serial.println(CHangeData); 
+}
+
+
+void handle_Set_SetJSON() {           //
+  String button = HTTP.arg("button");
+  byte data =  HTTP.arg("data").toInt();
+  byte eeprom =  HTTP.arg("eeprom").toInt();
+  String * PtrButton = &button;
+    /*  
+  if (*PtrButton!=data){
+    
+    Serial.print(*PtrButton);
+    Serial.println(data);
   
-  
+      EEPROM.write(eeprom, *PtrButton);
+      EEPROM.commit();
+    
+    }
+    */ 
+  HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
 }
 
 void handle_Set_Ssdp() {
@@ -71,66 +107,6 @@ void handle_Restart() {
     HTTP.send(200, "text / plain", "No Reset"); // Oтправляем ответ No Reset
   }
 }
-
-void handle_swdlight() {
-  String swdlight = HTTP.arg("swdlight");          // Получаем значение device из запроса
-  if (swdlight == "on") {    
-      digitalWrite(PinDL,!digitalRead(PinDL)); 
-      /*if (i){ swdlight = "выключено";
-      Serial.println(swdlight); }
-      else {swdlight = "включено";
-      Serial.println(swdlight); }*/
-      }
-    HTTP.send(200, "text/plain", "обрабатывается");
-   }
-  void handle_swnlight() {
-  String swnlight = HTTP.arg("swnlight");          // Получаем значение device из запроса
-  if (swnlight == "on") {    
-      byte i = digitalRead(PinNL); 
-      digitalWrite(PinNL,!i); 
-      if (i) swnlight = "выключено";
-      else swnlight = "включено";
-      }
-    HTTP.send(200, "text/plain", swnlight);
-   }
-   
-void handle_set_DlightPin() {           //
-  byte temp_PinDL = HTTP.arg("DlightPin").toInt(); 
-  if (PinDL!=temp_PinDL){
-    PinDL = temp_PinDL;                  // Получаем значение DlightPin из запроса сохраняем в глобальной переменной
-    EEPROM.write(1, PinDL);
-    EEPROM.commit();
-    pinMode(PinDL,OUTPUT);                   // переводим пин DlightPin в режим вывода  
-                                // Функция сохранения данных во Flash пока пустая
-  }  
-  HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
- }
- 
-void handle_set_NlightPin() {                    //
-  byte temp_PinNL = HTTP.arg("NlightPin").toInt(); 
-  if (PinNL!=temp_PinNL){
-    PinNL=temp_PinNL;
-    EEPROM.write(2, PinNL);
-    EEPROM.commit();
-    pinMode(PinNL,OUTPUT);                  // переводим пин NlightPin в режим вывода  
-                               // Функция сохранения данных во Flash пока пустая
-  }
-  HTTP.send(200, "text/plain", "OK");           // отправляем ответ о выполнении
-}
-
-void handle_Set_MDataJSON() {                    //
-  String smdata = HTTP.arg("smdata"); 
-  if (smdata='ok')DMaxTemp--;     
-  HTTP.send(200, "text/plain", "-");           // отправляем ответ о выполнении
-}
-
-void handle_Set_PDataJSON() {                    //
-  String spdata = HTTP.arg("spdata"); 
-  if (spdata='ok')DMaxTemp++;   
-  HTTP.send(200, "text/plain", "+");           // отправляем ответ о выполнении
-}
-
-
 void handle_ConfigJSON() {
   String json = "{";  // Формировать строку для отправки в браузер json формат
   //{"SSDP":"SSDP-test","ssid":"home","password":"i12345678","ssidAP":"WiFi","passwordAP":"","ip":"192.168.0.101"}
