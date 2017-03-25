@@ -3,7 +3,7 @@
    Запись и чтение параметров конфигурации в файл
 
 */
-#include <EEPROM.h>  
+#include <EEPROM.h>
 #include <ESP8266WiFi.h>        //Содержится в пакете. Видео с уроком http://esp8266-arduinoide.ru/step1-wifi
 #include <ESP8266WebServer.h>   //Содержится в пакете. Видео с уроком http://esp8266-arduinoide.ru/step2-webserver
 #include <ESP8266SSDP.h>        //Содержится в пакете. Видео с уроком http://esp8266-arduinoide.ru/step3-ssdp
@@ -14,9 +14,9 @@
 #include "HTU21D.h"
 
 
-RTC_DS1307 RTC; //работат с реалтайм часами 
-Adafruit_VEML6070 uv = Adafruit_VEML6070(); //обьявляем раобту с датчиком ультрафиолета 
-HTU21D myHumidity; //обьект работы с датчиком темпиратуры и влажности 
+RTC_DS1307 RTC; //работат с реалтайм часами
+Adafruit_VEML6070 uv = Adafruit_VEML6070(); //обьявляем раобту с датчиком ультрафиолета
+HTU21D myHumidity; //обьект работы с датчиком темпиратуры и влажности
 
 //                    ПЕРЕДАЧА ДАННЫХ НА WEB СТРАНИЦУ. Видео с уроком http://esp8266-arduinoide.ru/step5-datapages/
 //                    ПЕРЕДАЧА ДАННЫХ С WEB СТРАНИЦЫ.  Видео с уроком http://esp8266-arduinoide.ru/step6-datasend/
@@ -28,7 +28,7 @@ ESP8266WebServer HTTP(80);
 // Для файловой системы
 File fsUploadFile;
 // Определяем переменные wifi
-long previousMillis = 5000; // частота опроса датчиков 
+long previousMillis = 5000; // частота опроса датчиков
 long interval = 5000; // интервал опроса часов
 String _ssid     = "d-net.kiev.ua"; // Для хранения SSID
 String _password = "098765432154321"; // Для хранения пароля сети
@@ -46,12 +46,12 @@ DateTime now;
 
 byte ManualMod;
 byte PreManualMod;
-byte PinDL=14;
-byte PinNL=12;
-byte PinUH=13;
-byte PinDH=3;
-byte PinH=2;
-byte PinDT=0;
+byte PinDL = 14;
+byte PinNL = 12;
+byte PinUH = 13;
+byte PinDH = 3;
+byte PinH = 2;
+byte PinDT = 0;
 byte DMinTemp;
 byte DMaxTemp;
 byte NMinTemp;
@@ -73,19 +73,22 @@ byte NLState;
 byte UHState;
 byte DHState;
 byte HState;
+//String var{};
 
 void loop() {
   HTTP.handleClient();
   delay(1);
   unsigned long currentMillis = millis();
-  if(currentMillis - previousMillis > interval) {
+  if (currentMillis - previousMillis > interval) {
     previousMillis = currentMillis;
     UWLevel = uv.readUV();
     Humd = myHumidity.readHumidity();
     Temp = myHumidity.readTemperature();
-    now = RTC.now(); //считываение параметров часов     
-    }  
+    
+    now = RTC.now(); //считываение параметров часов
+  }
 }
+
 
 
 

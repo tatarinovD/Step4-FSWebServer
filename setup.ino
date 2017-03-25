@@ -2,6 +2,7 @@ void setup() {
   EEPROM.begin(40);//текущее значени 30 макс колличество переменных 512
   Serial.begin(115200);
   ManualMod = EEPROM.read(0); // режим работы контроллера 0- авто 1- ручной 
+  
   DMinTemp = EEPROM.read(7);  //дневной минимум температуры
   DMaxTemp = EEPROM.read(8);  //дневной максимум температуры
   NMinTemp = EEPROM.read(9);  //ночной минимум температуры
@@ -25,6 +26,8 @@ void setup() {
   Wire.begin(4, 5); // определяем пины L2C (D2,D1)
   myHumidity.begin();
   RTC.begin();//  Активация часов 
+  
+  //RTC.adjust(DateTime(2017, 3, 24, 17, 23, 0)); //устанавливаем часы 
   
   Serial.println("");
   //Запускаем файловую систему
