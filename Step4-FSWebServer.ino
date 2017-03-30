@@ -12,11 +12,13 @@
 #include <Wire.h>
 #include "RTClib.h"
 #include "HTU21D.h"
+#include <OneWire.h>
 
 
 RTC_DS1307 RTC; //работат с реалтайм часами
 Adafruit_VEML6070 uv = Adafruit_VEML6070(); //обьявляем раобту с датчиком ультрафиолета
 HTU21D myHumidity; //обьект работы с датчиком темпиратуры и влажности
+OneWire ds(0); // на пине 0 (нужен резистор 4.7 КОм)
 
 //                    ПЕРЕДАЧА ДАННЫХ НА WEB СТРАНИЦУ. Видео с уроком http://esp8266-arduinoide.ru/step5-datapages/
 //                    ПЕРЕДАЧА ДАННЫХ С WEB СТРАНИЦЫ.  Видео с уроком http://esp8266-arduinoide.ru/step6-datasend/
@@ -42,6 +44,7 @@ String jsonState = "{}";
 String jsonData = "{}";
 float Humd ;
 float Temp ;
+float tempDH;
 DateTime now;
 
 byte ManualMod;
@@ -51,7 +54,7 @@ byte PinNL = 12;
 byte PinUH = 13;
 byte PinDH = 3;
 byte PinH = 2;
-byte PinDT = 0;
+byte PinDT = 16;
 byte DMinTemp;
 byte DMaxTemp;
 byte NMinTemp;
@@ -84,7 +87,7 @@ void loop() {
     UWLevel = uv.readUV();
     Humd = myHumidity.readHumidity();
     Temp = myHumidity.readTemperature();
-    
+    tempDH = currentDigTemp();     
     now = RTC.now(); //считываение параметров часов
   }
 }

@@ -4,42 +4,19 @@ void HTTP_init(void) {
   HTTP.on("/state.json", handle_StateJSON); 
   HTTP.on("/data.json", handle_DataJSON); 
   HTTP.on("/set", handle_Set_SetJSON); 
-   HTTP.on("/setstate", handle_Set_StateJSON); 
+  HTTP.on("/setstate", handle_Set_StateJSON); 
+  HTTP.on("/settime", handle_time);  
   // API для устройства
   HTTP.on("/ssdp", handle_Set_Ssdp);            // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
   HTTP.on("/ssid", handle_Set_Ssid);            // Установить имя и пароль роутера по запросу вида /ssid?ssid=home2&password=12345678
   HTTP.on("/ssidap", handle_Set_Ssidap);        // Установить имя и пароль для точки доступа по запросу вида /ssidap?ssidAP=home1&passwordAP=8765439
   HTTP.on("/TimeZone", handle_time_zone);       // Установка времянной зоны по запросу вида http://192.168.0.101/TimeZone?timezone=3
   HTTP.on("/restart", handle_Restart);          // Перезагрузка модуля по запросу вида /restart?device=ok
-  HTTP.on("/swdlight", handle_swdlight);        // Перезагрузка модуля по запросу вида /swdlight?swdlight=ok
-  HTTP.on("/swnlight", handle_swnlight);        // Перезагрузка модуля по запросу вида /swnlight?swnlight=ok
- // Запускаем HTTP сервер
+  // Запускаем HTTP сервер
   HTTP.begin();
 }
 // Функции API-Set
 // Установка SSDP имени по запросу вида http://192.168.0.101/ssdp?ssdp=proba
-
-void handle_swdlight() {
-  String swdlight = HTTP.arg("swdlight");          // Получаем значение device из запроса
-  if (swdlight == "on") {    
-      byte i = digitalRead(PinDL); 
-      digitalWrite(PinDL,!i); 
-      if (i) swdlight = "выключено";
-      else swdlight = "включено";
-      }
-    HTTP.send(200, "text/plain", swdlight);
-   }
-
-  void handle_swnlight() {
-  String swnlight = HTTP.arg("swnlight");          // Получаем значение device из запроса
-  if (swnlight == "on") {    
-      byte i = digitalRead(PinNL); 
-      digitalWrite(PinNL,!i); 
-      if (i) swnlight = "выключено";
-      else swnlight = "включено";
-      }
-    HTTP.send(200, "text/plain", swnlight);
-   }
 
 void handle_Set_StateJSON() {           //
   String button = HTTP.arg("button");
@@ -47,44 +24,58 @@ void handle_Set_StateJSON() {           //
   if (button=="DLState"){
       byte i = digitalRead(PinDL); 
       digitalWrite(PinDL,!i); 
-      if (i) button = "выключено";
-      else button = "включено";
+      if (i) button = "OFF";
+      else button = "ON";
        HTTP.send(200, "text/plain", button);
       }
    if (button=="NLState"){
      byte i = digitalRead(PinNL); 
       digitalWrite(PinNL,!i); 
-      if (i) button = "выключено";
-      else button = "включено";
+      if (i) button = "OFF";
+      else button = "ON";
        HTTP.send(200, "text/plain", button);
    } 
    if (button=="PHState"){
      byte i = digitalRead(PinUH); 
       digitalWrite(PinUH,!i); 
-      if (i) button = "выключено";
-      else button = "включено";
+      if (i) button = "OFF";
+      else button = "ON";
        HTTP.send(200, "text/plain", button);
    } 
       if (button=="DHState"){
      byte i = digitalRead(PinDH); 
       digitalWrite(PinDH,!i); 
-      if (i) button = "выключено";
-      else button = "включено";
+      if (i) button = "OFF";
+      else button = "ON";
        HTTP.send(200, "text/plain", button);
    } 
 } 
 
 void handle_Set_SetJSON() {           //
-  String button = HTTP.arg("button");
-  String data =  HTTP.arg("data");
-  byte eeprom =  HTTP.arg("eeprom").toInt();
-  //var[button] = data;
-  //if (_var["DMinTemp"]!=data){    
+    String button = HTTP.arg("button");
     Serial.println(button);
-   // EEPROM.write(eeprom, data);
-   // EEPROM.commit();
-  //}
-  HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
+    if (button=="commit"){
+      readmem();
+      HTTP.send(200, "text/plain", "OK");
+      Serial.println("Commit");
+    }
+    else{
+      byte data =  HTTP.arg("data").toInt();
+      byte eeprom =  HTTP.arg("eeprom").toInt();
+      EEPROM.write(eeprom, data);
+      EEPROM.commit();
+      HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
+    }
+}
+
+void handle_time() {
+ int  Y = HTTP.arg("Year").toInt();  
+ byte M = HTTP.arg("Month").toInt();  
+ byte d = HTTP.arg("Day").toInt();  
+ byte h = HTTP.arg("Hour").toInt();  
+ byte m = HTTP.arg("Minute").toInt();  
+ setTime(Y,M,d,h,m);
+ HTTP.send(200, "text/plain", "OK"); // отправляем ответ о выполнении
 }
 
 void handle_Set_Ssdp() {
@@ -167,23 +158,25 @@ void handle_SettingJSON() {
 void handle_StateJSON() {
   String json = "{";  // Формировать строку для отправки в браузер json формат
   json += "\"DLState\":\"";
-  if (digitalRead(PinDL)) json += "включено";
-  else json += "выключено";
+  if (digitalRead(PinDL)) json += "ON";
+  else json += "OFF";
   json += "\",\"NLState\":\"";
-  if (digitalRead(PinNL)) json += "включено";
-  else json += "выключено";
+  if (digitalRead(PinNL)) json += "ON";
+  else json += "OFF";
   json += "\",\"PHState\":\"";
-  if (digitalRead(PinUH)) json += "включено";
-  else json += "выключено";
+  if (digitalRead(PinUH)) json += "ON";
+  else json += "OFF";
   json += "\",\"DHState\":\"";
-  if (digitalRead(PinDH)) json += "включено";
-  else json += "выключено"; 
+  if (digitalRead(PinDH)) json += "ON";
+  else json += "OFF"; 
   json += "\",\"UWLevel\":\"";
   json += UWLevel;
   json += "\",\"Humd\":\"";
   json += Humd;
   json += "\",\"Temp\":\"";
   json += Temp;
+  json += "\",\"TempDH\":\"";
+  json += tempDH;
   json += "\",\"Year\":\"";
   json += now.year();
   json += "\",\"Month\":\"";
@@ -235,6 +228,16 @@ void handle_DataJSON() {
   json += BeginDay;
   json += "\",\"EndDay\":\"";
   json += EndDay;
+  json += "\",\"Year\":\"";
+  json += now.year();
+  json += "\",\"Month\":\"";
+  json += now.month();
+  json += "\",\"Day\":\"";
+  json += now.day();
+  json += "\",\"Hour\":\"";
+  json += now.hour();
+  json += "\",\"Minute\":\"";
+  json += now.minute();
   json += "\"}";
   HTTP.send(200, "text/json", json);
 }

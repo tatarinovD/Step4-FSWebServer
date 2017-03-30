@@ -58,6 +58,39 @@ for (var key in data2) {
  document.getElementsByTagName('body')[0].innerHTML = new_string;
  handleServerResponse();
 }
+
+
+function refreshDATA(){
+ if(xmlHttp.readyState==0 || xmlHttp.readyState==4){
+  xmlHttp.open('PUT','/state.json',true);
+  xmlHttp.send(null);
+  xmlHttp.onload = function(e) {
+  jsonResponse=JSON.parse(xmlHttp.responseText);
+  loadRefreshBlock(jsonResponse);
+  }
+ }
+    setTimeout('refreshDATA()',5000);
+}
+
+function loadRefreshBlock(data2) {
+  delete data2['Year'];
+  delete data2['Month'];
+  delete data2['Day'];
+  delete data2['Hour'];
+  delete data2['Minute'];
+  for (var key in data2) {
+    if (document.getElementById(key).value!= data2[key]){
+      document.getElementById(key).value = data2[key];
+    }
+  }
+  data=JSON.parse(xmlHttp.responseText);
+  document.getElementById('date').value = data['Year']+' / '+data['Month']+' / '+data['Day'];  
+  document.getElementById('time').value = data['Hour']+' : '+data['Minute'];  
+}
+
+
+
+
 function val(id){
  var v = document.getElementById(id).value;
  return v;

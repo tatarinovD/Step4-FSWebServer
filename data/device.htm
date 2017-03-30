@@ -6,15 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Страница управления</title>
   <script type="text/javascript">
+function handleServerResponse(){
+
+   }
  
 function set(submit) {
-    //server = "/set?button="+submit.id+"&data="+elem+"&eeprom="+submit.name;
-    //var elem = document.getElementById(submit.id+"Id").value;
-    server = "/set?button="+submit.id+"&data="+val(submit.id+"Id")+"&eeprom="+submit.name;
+    server = "/set?data="+val(submit.id+"id")+"&eeprom="+submit.name;
     alert(server);
     send_request(submit,server);   
 }           
-            
+function commit(submit) {
+    server = "/set?button="+submit.id;
+    alert(server);
+    send_request(submit,server);   
+}  
+function set_time(submit) {
+    server = "/settime?Year="+val("Year")+"&Month="+val("Month")+"&Day="+val("Day")+"&Hour="+val("Hour")+"&Minute="+val("Minute");
+    alert(server);
+    send_request(submit,server);   
+}             
 </script>
  </head>
  <body onload="loadDATA();">
@@ -24,10 +34,10 @@ function set(submit) {
           Начало светового дня "BeginDay" 
         </th> 
         <th>         
-          <input id="BeginDayId" value="{{BeginDay}}"  pattern="[0-9]{1,2}">
+          <input id="BeginDayid" value="{{BeginDay}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set(this);" type="submit">
+          <input type="submit" id="BeginDay"  name="18" value="Сохранить" onclick="set(this);" >
            </th>
         </tr>  
         <tr>
@@ -35,10 +45,10 @@ function set(submit) {
            Конец светового дня "EndDay" 
          </th> 
         <th>         
-          <input id="EndDayId" value="{{EndDay}}"  pattern="[0-9]{1,2}">
+          <input id="EndDayid" value="{{EndDay}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+          <input id="EndDay" type="submit" name="19" value="Сохранить" onclick="set(this);" >
            </th>
         </tr>  
         <tr>
@@ -46,7 +56,7 @@ function set(submit) {
            Дневной минимум температуры "DMinTemp" 
          </th> 
         <th>         
-          <input id="DMinTempId"  value="{{DMinTemp}}"  pattern="[0-9]{1,2}">
+          <input id="DMinTempid"  value="{{DMinTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
         <input type="submit" id="DMinTemp" name="7" value="Сохранить" onclick="set(this);">
@@ -57,7 +67,7 @@ function set(submit) {
            Дневной максимум температуры "DMaxTemp" 
          </th> 
         <th>         
-          <input id="DMaxTempId"  value="{{DMaxTemp}}"  pattern="[0-9]{1,2}">
+          <input id="DMaxTempid"  value="{{DMaxTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
           <input type="submit" id="DMaxTemp" name="8" value="Сохранить" onclick="set(this);" >
@@ -68,10 +78,10 @@ function set(submit) {
            Дневной минимум температуры пола "DDHMinTemp" 
          </th> 
         <th>         
-          <input id="DDHMinTemp"  value="{{DDHMinTemp}}"  pattern="[0-9]{1,2}">
+          <input id="DDHMinTempid"  value="{{DDHMinTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-        <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+         <input type="submit" id="DDHMinTemp" name="13" value="Сохранить" onclick="set(this);">
            </th>
         </tr>
         <tr>
@@ -79,10 +89,10 @@ function set(submit) {
            Дневной максимум температуры пола "DDHMaxTemp" 
          </th> 
         <th>         
-          <input id="DDHMaxTemp"  value="{{DDHMaxTemp}}"  pattern="[0-9]{1,2}">
+          <input id="DDHMaxTempid"  value="{{DDHMaxTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+           <input type="submit" id="DDHMaxTemp" name="14" value="Сохранить" onclick="set(this);">
         </th>
         </tr>   
         <tr>
@@ -90,10 +100,10 @@ function set(submit) {
            Ночной минимум температуры "NMinTemp" 
          </th> 
         <th>         
-          <input id="NMinTemp"  value="{{NMinTemp}}"  pattern="[0-9]{1,2}">
+          <input id="NMinTempid"  value="{{NMinTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-        <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+        <input type="submit" id="NMinTemp" name="9" value="Сохранить" onclick="set(this);">
            </th>
         </tr>
         <tr>
@@ -101,10 +111,10 @@ function set(submit) {
            Ночной максимум температуры "NMaxTemp" 
          </th> 
         <th>         
-          <input id="NMaxTemp"  value="{{NMaxTemp}}"  pattern="[0-9]{1,2}">
+          <input id="NMaxTempid"  value="{{NMaxTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+          <input type="submit" id="NMaxTemp" name="10" value="Сохранить" onclick="set(this);">
         </th>
         </tr> 
         <tr>
@@ -112,10 +122,10 @@ function set(submit) {
            Ночной минимум температуры пола "NDHMinTemp" 
          </th> 
         <th>         
-          <input id="NDHMinTemp"  value="{{NDHMinTemp}}"  pattern="[0-9]{1,2}">
+          <input id="NDHMinTempid"  value="{{NDHMinTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-        <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+        <input type="submit" id="NDHMinTemp" name="15" value="Сохранить" onclick="set(this);">
            </th>
         </tr>
         <tr>
@@ -123,10 +133,10 @@ function set(submit) {
            Ночной максимум температуры пола "NDHMaxTemp" 
          </th> 
         <th>         
-          <input id="NDHMaxTemp"  value="{{NDHMaxTemp}}"  pattern="[0-9]{1,2}">
+          <input id="NDHMaxTempid"  value="{{NDHMaxTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+           <input type="submit" id="NDHMaxTemp" name="16" value="Сохранить" onclick="set(this);">
         </th>
         </tr> 
         <tr>
@@ -134,10 +144,10 @@ function set(submit) {
            Минимальное значение влажности "HMinTemp" 
          </th> 
         <th>         
-          <input id="HMinTemp"  value="{{HMinTemp}}"  pattern="[0-9]{1,2}">
+          <input id="HMinTempid"  value="{{HMinTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-        <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+       <input type="submit" id="HMinTemp" name="11" value="Сохранить" onclick="set(this);">
            </th>
         </tr>
         <tr>
@@ -145,10 +155,10 @@ function set(submit) {
            Максимальное значение влажности "HMaxTemp" 
          </th> 
         <th>         
-          <input id="HMaxTemp"  value="{{HMaxTemp}}"  pattern="[0-9]{1,2}">
+          <input id="HMaxTempid"  value="{{HMaxTemp}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+          <input type="submit" id="HMaxTemp" name="12" value="Сохранить" onclick="set(this);"> 
         </th>
         </tr> 
         <tr>
@@ -156,10 +166,10 @@ function set(submit) {
            Нормальный уровень УФ "UWMinLevel" 
          </th> 
         <th>         
-          <input id="UWMinLevel"  value="{{UWMinLevel}}"  pattern="[0-9]{1,2}">
+          <input id="UWMinLevelid"  value="{{UWMinLevel}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-        <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+        <input type="submit" id="UWMinLevel" name="17" value="Сохранить" onclick="set(this);"> 
            </th>
         </tr>
         <tr>
@@ -167,10 +177,10 @@ function set(submit) {
            Минимальное УФ ночью "NUWMinLevel" 
          </th> 
         <th>         
-          <input id="NUWMinLevel"  value="{{NUWMinLevel}}"  pattern="[0-9]{1,2}">
+          <input id="NUWMinLevelid"  value="{{NUWMinLevel}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+         <input type="submit" id="NUWMinLevel" name="20" value="Сохранить" onclick="set(this);">
         </th>
         </tr>
         <tr>
@@ -178,12 +188,33 @@ function set(submit) {
            Максимальное УФ ночью "NUWMaxLevel" 
          </th> 
         <th>         
-          <input id="NUWMaxLevel"  value="{{NUWMaxLevel}}"  pattern="[0-9]{1,2}">
+          <input id="NUWMaxLevelid"  value="{{NUWMaxLevel}}"  pattern="[0-9]{1,2}">
         </th>
         <th>
-          <input class="btn btn-block btn-success" value="Сохранить" onclick="set_NlightPin(this);" type="submit">
+           <input type="submit" id="NUWMaxLevel" name="21" value="Сохранить" onclick="set(this);">
         </th>
-        </tr>          
+        </tr>
+        <tr>
+            <th style="text-align:left;" colspan="2"> 
+                 <h2>Переназначить переменные </h2>
+            </th>
+             <th>
+               <input type="submit" id="commit" value="подтвердить" onclick="commit(this);">  
+             </th>
+           </tr> 
     </table>
+    <table>
+    <tr>
+        <h2>год/месяц/день час:минуты</h2>
+    </tr>
+    <tr>    
+    <input style="width:50px;"id="Year" value="{{Year}}" pattern="[0-9]{1,4}">&nbsp;
+    <input style="width:50px;"id="Month" value="{{Month}}"pattern="[0-9]{1,2}">&nbsp;
+    <input style="width:50px;"id="Day" value="{{Day}}"  pattern="[0-9]{1,2}">&nbsp;
+    <input style="width:50px;"id="Hour" value="{{Hour}}" pattern="[0-9]{1,2}">&nbsp;
+    <input style="width:50px;"id="Minute" value="{{Minute}}"  pattern="[0-9]{1,2}">&nbsp;
+    <input type="submit" value="подтвердить" onclick="set_time(this);"> 
+        </tr>
+    </table>            
   </body>
 </html>
