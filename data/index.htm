@@ -10,22 +10,35 @@
   <script type="text/javascript">
     function handleServerResponse(){
    }
-      
+    function set(submit) {
+      server = "/setstate?button="+submit.id;
+      send_request(submit,server);   
+    } 
+    function activate(submit){
+      //document.getElementsByClassName("disabled").disabled="false";
+      var elements = document.getElementsByClassName("disabled");
+      for (var key= 0; key < elements.length;key++)   {
+        elements[key].disabled=!elements[key].disabled;          
+      } 
+     if (val('ManualMod')=="Ручное управление")server = "/setmode?ManualMod=0";  
+     else server = "/setmode?ManualMod=1"; 
+     send_request(submit,server); 
+    }          
   </script>
  </head>
- <body onload="loadSTAT();">
+ <body onload="refreshDATA();">
   <div class="container">
    <div class="row" style="text-align:center;">
     <div class="col-sm-offset-2 col-sm-8"><br>
-    <h1>
+
     <table border="0" style="width:100%;">
         <tr>
           <th > 
-           <h5 class="alert-info" style="width:100%;" id="date">{{Day}}/{{Month}}/{{Year}}</h5>
+          <input type="submit" id='date'  style="text-align:center;width:100%;height:50px" class="alert-info" value="">
           </th>
           <th> 
-           <h5 class="alert-info" style="width:100%;" id="day_mode">{{Hour}}:{{Minute}}</h5>
-          </th>
+           <input type="submit" id='time'  style="text-align:center;width:100%;height:50px" class="alert-info" value="">
+           </th>
         </tr>
         <tr>
         <th style="width:50%;">
@@ -42,22 +55,21 @@
         <th style="width:50%;">
           <input type="submit" id='UWLevel'  style="text-align:center;width:100%;height:150px" class="btn btn-block" value="{{UWLevel}}">
         </th>
-        </tr>     
-      </table>
-      </h1>
+        </tr> 
+         </table>    
       <table border="0" style="width:100%;">
          <tr >
            <th  style="width:25%;">
-              <input type="submit" id='UWLevel'  style="text-align:center;width:100%;height:100px" class="btn btn-block" value="{{DLState}}">
+              <input type="submit" id='DLState'  style="text-align:center;width:100%;height:100px" class="btn btn-block disabled" disabled="true" value="{{DLState}}" onclick="set(this);"  >
             </th>      
            <th  style="width:25%;">
-              <input type="submit" id='UWLevel'  style="text-align:center;width:100%;height:100px" class="btn btn-block" value="{{DLState}}">
+              <input type="submit" id='NLState'  style="text-align:center;width:100%;height:100px" class="btn btn-block disabled"  disabled="true" value="{{NLState}}" onclick="set(this);" >
             </th>    
            <th  style="width:25%;">
-              <input type="submit" id='UWLevel'  style="text-align:center;width:100%;height:100px" class="btn btn-block" value="{{PHState}}">
+              <input type="submit" id='PHState'  style="text-align:center;width:100%;height:100px" class="btn btn-block disabled" disabled="true" value="{{PHState}}" onclick="set(this);" >
             </th>  
               <th  style="width:25%;">
-              <input type="submit" id='UWLevel'  style="text-align:center;width:100%;height:100px" class="btn btn-block" value="{{DHState}}">
+              <input type="submit" id='DHState'  style="text-align:center;width:100%;height:100px" class="btn btn-block disabled" disabled="true" value="{{DHState}}" onclick="set(this);" >
             </th>       
         </tr>      
       </table>
@@ -65,7 +77,8 @@
     <br><br><br> 
     <a class="btn btn-block btn-default" href="/setup.htm">Доп. настройки</a>
     <a class="btn btn-block btn-default" href="/device.htm">Страница управления</a>
-    <a class="btn btn-block btn-default" href="/manual.htm">Ручное управление</a>
+    <input type="submit" id="ManualMod" style="text-align:center;width:100%;" class="btn btn-block" value="" onclick="activate(this);">
+
     </div>
    </div>
   </div>

@@ -89,6 +89,7 @@ void loop() {
     Temp = myHumidity.readTemperature();
     tempDH = currentDigTemp();     
     now = RTC.now(); //считываение параметров часов
+    auto_mod();
   }
 }
 

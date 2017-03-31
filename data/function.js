@@ -73,23 +73,25 @@ function refreshDATA(){
 }
 
 function loadRefreshBlock(data2) {
-  delete data2['Year'];
-  delete data2['Month'];
-  delete data2['Day'];
-  delete data2['Hour'];
-  delete data2['Minute'];
+  document.getElementById('date').value = data2['Year']+' / '+data2['Month']+' / '+data2['Day'];  
+  document.getElementById('time').value = data2['Hour']+' : '+data2['Minute'];  
+  delete data2['Year'];  delete data2['Month'];  delete data2['Day'];  delete data2['Hour'];  delete data2['Minute'];
   for (var key in data2) {
     if (document.getElementById(key).value!= data2[key]){
       document.getElementById(key).value = data2[key];
     }
   }
-  data=JSON.parse(xmlHttp.responseText);
-  document.getElementById('date').value = data['Year']+' / '+data['Month']+' / '+data['Day'];  
-  document.getElementById('time').value = data['Hour']+' : '+data['Minute'];  
+  if (data2['ManualMod']=="авто. управление")  loadbatonState(false);
+  else loadbatonState(true);    
+
 }
 
-
-
+function loadbatonState(data2){
+    var elements = document.getElementsByClassName('disabled');
+    for (var key= 0; key < elements.length;key++) {
+       if (elements[key].disabled != data2) elements[key].disabled = data2;    
+  }    
+}
 
 function val(id){
  var v = document.getElementById(id).value;
@@ -111,13 +113,13 @@ function save_status(submit,request){
    submit_disabled(false);
   }, 1000);
  }
- //submit.value = 'Подождите...';
+ // submit.value = 'Подождите...';
  submit_disabled(true);
 }
 function submit_disabled(request){
- var inputs = document.getElementsByTagName('input');
+ var inputs = document.getElementsByTagName('input'); 
  for (var i = 0; i < inputs.length; i++) {
-  if (inputs[i].type === 'submit') {inputs[i].disabled = request;}
+   if (inputs[i].type === 'submit') {inputs[i].disabled = request;}
  }
 }
 

@@ -1,10 +1,10 @@
 void HTTP_init(void) {
   HTTP.on("/configs.json", handle_ConfigJSON); // формирование configs.json страницы для передачи данных в web интерфейс
-  HTTP.on("/settings.json", handle_SettingJSON); 
   HTTP.on("/state.json", handle_StateJSON); 
   HTTP.on("/data.json", handle_DataJSON); 
   HTTP.on("/set", handle_Set_SetJSON); 
   HTTP.on("/setstate", handle_Set_StateJSON); 
+  HTTP.on("/setmode", handle_Set_modeJSON);
   HTTP.on("/settime", handle_time);  
   // API для устройства
   HTTP.on("/ssdp", handle_Set_Ssdp);            // Установить имя SSDP устройства по запросу вида /ssdp?ssdp=proba
@@ -20,44 +20,48 @@ void HTTP_init(void) {
 
 void handle_Set_StateJSON() {           //
   String button = HTTP.arg("button");
-  Serial.println(button);
   if (button=="DLState"){
       byte i = digitalRead(PinDL); 
       digitalWrite(PinDL,!i); 
-      if (i) button = "OFF";
-      else button = "ON";
+      if (i) button = "ON";
+      else button = "OFF";
        HTTP.send(200, "text/plain", button);
       }
    if (button=="NLState"){
      byte i = digitalRead(PinNL); 
       digitalWrite(PinNL,!i); 
-      if (i) button = "OFF";
-      else button = "ON";
-       HTTP.send(200, "text/plain", button);
+      if (i) button = "ON";
+      else button = "OFF";
+      HTTP.send(200, "text/plain", button);
    } 
    if (button=="PHState"){
      byte i = digitalRead(PinUH); 
       digitalWrite(PinUH,!i); 
-      if (i) button = "OFF";
-      else button = "ON";
-       HTTP.send(200, "text/plain", button);
+      if (i) button = "ON";
+      else button = "OFF";
+      HTTP.send(200, "text/plain", button);
    } 
       if (button=="DHState"){
      byte i = digitalRead(PinDH); 
       digitalWrite(PinDH,!i); 
-      if (i) button = "OFF";
-      else button = "ON";
-       HTTP.send(200, "text/plain", button);
+      if (i) button = "ON";
+      else button = "OFF";
+      HTTP.send(200, "text/plain", button);
    } 
 } 
 
+void handle_Set_modeJSON() {           //
+      ManualMod =  HTTP.arg("ManualMod").toInt();
+      EEPROM.write(0, ManualMod);
+      EEPROM.commit();
+      HTTP.send(200, "text/plain", "OK");            // отправляем ответ о выполнении
+}
+
 void handle_Set_SetJSON() {           //
     String button = HTTP.arg("button");
-    Serial.println(button);
     if (button=="commit"){
       readmem();
       HTTP.send(200, "text/plain", "OK");
-      Serial.println("Commit");
     }
     else{
       byte data =  HTTP.arg("data").toInt();
@@ -145,30 +149,24 @@ void handle_ConfigJSON() {
   json += "\"}";
   HTTP.send(200, "text/json", json);
 }
-void handle_SettingJSON() {
-  String json = "{";  // Формировать строку для отправки в браузер json формат
-  json += "\"PinDlight\":\"";
-  json += PinDL;
-  json += "\",\"PinNlight\":\"";
-  json += PinNL;
-  json += "\"}";
-  HTTP.send(200, "text/json", json);
-}
 
 void handle_StateJSON() {
   String json = "{";  // Формировать строку для отправки в браузер json формат
-  json += "\"DLState\":\"";
-  if (digitalRead(PinDL)) json += "ON";
-  else json += "OFF";
+  json += "\"ManualMod\":\"";
+  if (ManualMod) json += "Ручное управление";
+  else json += "авто. управление";
+  json += "\",\"DLState\":\"";
+  if (digitalRead(PinDL)) json += "OFF";
+  else json += "ON";
   json += "\",\"NLState\":\"";
-  if (digitalRead(PinNL)) json += "ON";
-  else json += "OFF";
+  if (digitalRead(PinNL)) json += "OFF";
+  else json += "ON";
   json += "\",\"PHState\":\"";
-  if (digitalRead(PinUH)) json += "ON";
-  else json += "OFF";
+  if (digitalRead(PinUH)) json += "OFF";
+  else json += "ON";
   json += "\",\"DHState\":\"";
-  if (digitalRead(PinDH)) json += "ON";
-  else json += "OFF"; 
+  if (digitalRead(PinDH)) json += "OFF";
+  else json += "ON"; 
   json += "\",\"UWLevel\":\"";
   json += UWLevel;
   json += "\",\"Humd\":\"";
