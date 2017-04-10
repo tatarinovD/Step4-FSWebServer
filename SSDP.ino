@@ -10,10 +10,10 @@ void SSDP_init(void) {
   SSDP.setName(SSDP_Name);
   SSDP.setSerialNumber("001788102201");
   SSDP.setURL("/");
-  SSDP.setModelName("SSDP-Test");
+  SSDP.setModelName("SSDP-TERRARIUM");
   SSDP.setModelNumber("000000000001");
-  SSDP.setModelURL("http://esp8266-arduinoide.ru/step3-ssdp/");
-  SSDP.setManufacturer("Tretyakov Sergey");
-  SSDP.setManufacturerURL("http://www.esp8266-arduinoide.ru");
+  SSDP.setModelURL("http://");
+  SSDP.setManufacturer("MY SALF");
+  SSDP.setManufacturerURL("http://www.arduinoide.ru");
   SSDP.begin();
 }

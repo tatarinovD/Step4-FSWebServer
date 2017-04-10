@@ -18,39 +18,39 @@ void HTTP_init(void) {
 // Функции API-Set
 // Установка SSDP имени по запросу вида http://192.168.0.101/ssdp?ssdp=proba
 
-void handle_Set_StateJSON() {           //
+void handle_Set_StateJSON() {         
   String button = HTTP.arg("button");
   if (button=="DLState"){
-      byte i = digitalRead(PinDL); 
-      digitalWrite(PinDL,!i); 
-      if (i) button = "ON";
-      else button = "OFF";
-       HTTP.send(200, "text/plain", button);
+      DLState = !digitalRead(PinDL); 
+      digitalWrite(PinDL,DLState); 
+      if (DLState) button = "OFF";
+      else button = "ON";
+      HTTP.send(200, "text/plain", button);
       }
    if (button=="NLState"){
-     byte i = digitalRead(PinNL); 
-      digitalWrite(PinNL,!i); 
-      if (i) button = "ON";
-      else button = "OFF";
+      NLState = !digitalRead(PinNL); 
+      digitalWrite(PinNL,NLState); 
+      if (NLState) button = "OFF";
+      else button = "ON";
       HTTP.send(200, "text/plain", button);
    } 
-   if (button=="PHState"){
-     byte i = digitalRead(PinUH); 
-      digitalWrite(PinUH,!i); 
-      if (i) button = "ON";
-      else button = "OFF";
+   if (button=="UHState"){
+      UHState = !digitalRead(PinUH); 
+      digitalWrite(PinUH,UHState); 
+      if (UHState) button = "OFF";
+      else button = "ON";
       HTTP.send(200, "text/plain", button);
    } 
       if (button=="DHState"){
-     byte i = digitalRead(PinDH); 
-      digitalWrite(PinDH,!i); 
-      if (i) button = "ON";
-      else button = "OFF";
+      DHState = !digitalRead(PinDH); 
+      digitalWrite(PinDH,DHState); 
+      if (DHState) button = "OFF";
+      else button = "On";
       HTTP.send(200, "text/plain", button);
    } 
 } 
 
-void handle_Set_modeJSON() {           //
+void handle_Set_modeJSON() {   
       ManualMod =  HTTP.arg("ManualMod").toInt();
       EEPROM.write(0, ManualMod);
       EEPROM.commit();
@@ -161,13 +161,15 @@ void handle_StateJSON() {
   json += "\",\"NLState\":\"";
   if (digitalRead(PinNL)) json += "OFF";
   else json += "ON";
-  json += "\",\"PHState\":\"";
+  json += "\",\"UHState\":\"";
   if (digitalRead(PinUH)) json += "OFF";
   else json += "ON";
   json += "\",\"DHState\":\"";
   if (digitalRead(PinDH)) json += "OFF";
   else json += "ON"; 
   json += "\",\"UWLevel\":\"";
+  json += lux ;
+  json += "/" ;
   json += UWLevel;
   json += "\",\"Humd\":\"";
   json += Humd;
@@ -222,6 +224,10 @@ void handle_DataJSON() {
   json += NUWMinLevel;
   json += "\",\"NUWMaxLevel\":\"";
   json += NUWMaxLevel;
+  json += "\",\"LUXMinLevel\":\"";
+  json += LUXMinLevel;
+  json += "\",\"LUXMaxLevel\":\"";
+  json += LUXMaxLevel;
   json += "\",\"BeginDay\":\"";
   json += BeginDay;
   json += "\",\"EndDay\":\"";

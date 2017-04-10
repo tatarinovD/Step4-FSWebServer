@@ -1,7 +1,7 @@
 void WIFIinit() {
   // Попытка подключения к точке доступа
   WiFi.mode(WIFI_STA);
-  byte tries = 11;
+  byte tries = 10;
   WiFi.begin(_ssid.c_str(), _password.c_str());
   // Делаем проверку подключения до тех пор пока счетчик tries
   // не станет равен нулю или не получим подключение
@@ -9,6 +9,18 @@ void WIFIinit() {
   {
     Serial.print(".");
     delay(2000);
+  }
+  if (WiFi.status() != WL_CONNECTED)
+  {
+   WiFi.disconnect();
+   WiFi.mode(WIFI_STA);
+   byte tries = 10;
+   WiFi.begin(_ssid.c_str(), _password.c_str());
+   while (--tries && WiFi.status() != WL_CONNECTED)
+   {
+     Serial.print(".");
+     delay(2000);
+   } 
   }
   if (WiFi.status() != WL_CONNECTED)
   {

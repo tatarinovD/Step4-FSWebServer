@@ -193,6 +193,28 @@ function set_time(submit) {
         <th>
            <input type="submit" id="NUWMaxLevel" name="21" value="Сохранить" onclick="set(this);">
         </th>
+        </tr>        
+         <tr>
+         <th style="text-align:left;"> 
+           Минимальное LUX ночью "LUXMinLevel" 
+         </th> 
+        <th>         
+          <input id="LUXMinLevelid"  value="{{LUXMinLevel}}"  pattern="[0-9]{1,2}">
+        </th>
+        <th>
+         <input type="submit" id="LUXMinLevel" name="26" value="Сохранить" onclick="set(this);">
+        </th>
+        </tr>
+        <tr>
+         <th style="text-align:left;"> 
+           Максимальное LUX ночью "NUWMaxLevel" 
+         </th> 
+        <th>         
+          <input id="LUXMaxLevelid"  value="{{LUXMaxLevel}}"  pattern="[0-9]{1,2}">
+        </th>
+        <th>
+           <input type="submit" id="LUXMaxLevel" name="27" value="Сохранить" onclick="set(this);">
+        </th>
         </tr>
         <tr>
             <th style="text-align:left;" colspan="2"> 

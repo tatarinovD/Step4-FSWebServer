@@ -1,56 +1,105 @@
 
 void auto_mod() {  
-    if (ManualMod){
       DLState = digitalRead(PinDL);
       NLState = digitalRead(PinNL);
       UHState = digitalRead(PinUH);
       DHState = digitalRead(PinDH);
-      HState  = digitalRead(PinH);
-      if (Humd < HMinTemp and digitalRead(PinH) == 1) digitalWrite(PinH,0); // включаем увлажнитель 
-      if (Humd >= HMaxTemp and digitalRead(PinH) == 0) digitalWrite(PinH,1); // выключаем увлажнитель 
+    if (ManualMod){
       if(now.hour() >= BeginDay and  now.hour() < EndDay) { // --------------------------день а свет не включен
-        if (DLState) digitalWrite(PinDL,0);//включаем дневной свет 
-        if (!NLState) digitalWrite(PinNL,1); //включаем ночной свет если он включен
-        if (Temp <= DMinTemp and UHState == 1) digitalWrite(PinUH,0); //включаем подогрев на дневном минимуме
-        if (Temp >= DMaxTemp and UHState ==0) digitalWrite(PinUH,1); //отключаем дневной подогрев по максимуму
-        if (tempDH < DDHMinTemp and DHState ==1) digitalWrite(PinDH,0); //включаем коврик по минимуму
-        if (tempDH >= DDHMaxTemp and DHState ==0) digitalWrite(PinDH,1); //отключаем коврик по достижению максимума 
+        if(now.hour() >= 12 and  now.hour() < 15) {
+           if (DLState and UWLevel < 5) {
+             Serial.println("UF LAMP TURN ON by UWLevel and TIME");
+             digitalWrite(PinDL,0);//включаем дневной свет 
+           }             
+           else if (!DLState and UWLevel > 5){
+             Serial.println("UF LAMP TURN OFF by UWLevel");
+             digitalWrite(PinDL,1);//включаем дневной свет 
+           }
+        }  
+        else { 
+          if (!DLState){
+            Serial.println("UF LAMP TURN OFF by TIME");
+            digitalWrite(PinDL,1);
+          }
+        }
+        if (!NLState) {
+          digitalWrite(PinNL,1); //включаем ночной свет если он включен
+          Serial.println("NIGHT LIGHT TURN OF by TIME");
+        }
+        if (Temp <= DMinTemp and UHState) {
+          digitalWrite(PinUH,0); //включаем подогрев на дневном минимуме
+          Serial.println("TURN ON UP HITING BY DAY TEMP MIN ");
+          Serial.println(digitalRead(PinUH));
+        }
+        if (Temp >= DMaxTemp and !UHState) {
+          digitalWrite(PinUH,1); //отключаем дневной подогрев по максимуму
+          Serial.println("TURN OFF UP HITING BY DAY TEMP MAX");
+        }
+        if (tempDH < DDHMinTemp and DHState) {
+          digitalWrite(PinDH,0); //включаем коврик по минимуму
+          Serial.println("TURN ON DOWN HITING BY DAY TEMP MIN");
+        }
+        if (tempDH >= DDHMaxTemp and !DHState) {
+          digitalWrite(PinDH,1); //отключаем коврик по достижению максимума 
+          Serial.println("TURN OFF DOWN HITING BY DAY TEMP MAX");
+        }
       }
       else {
-        Serial.print("night ");
-        Serial.println(now.hour());
-        if (!DLState) digitalWrite(PinDL,1);
-        if (NLState == 1 and UWLevel < NUWMinLevel) digitalWrite(PinNL,0);//включаем ночной свет по УФ датчику
-        if (NLState == 0 and UWLevel > NUWMaxLevel) digitalWrite(PinNL,1);//выключаем ночной свет по УФ датчику
-        if (Temp <= NMinTemp and UHState == 1) digitalWrite(PinUH,0); //включаем подогрев на дневном минимуме
-        if (Temp >= NMaxTemp and UHState ==0) digitalWrite(PinUH,1); //отключаем дневной подогрев по максимуму
-        if (tempDH < DDHMinTemp and DHState ==1)digitalWrite(PinDH,0); //включаем коврик по минимуму
-        if (tempDH >= DDHMaxTemp and DHState ==0)digitalWrite(PinDH,1); //отключаем коврик по достижению максимума 
+        if (!DLState) {
+          digitalWrite(PinDL,1);
+          Serial.println("NIGHT LIGHT TURN ON by TIME");          
+        }
+        if (NLState and lux < LUXMinLevel) {
+          digitalWrite(PinNL,0);//включаем ночной свет по LUX датчику
+          Serial.println("NIGHT LIGHT TURN ON by LUXMinLevel");   
+        }
+        if (!NLState and lux >= LUXMaxLevel) {
+          digitalWrite(PinNL,1);//выключаем ночной свет по УФ датчику
+          Serial.println("NIGHT LIGHT TURN OFF by NUWMaxLevel");   
+        }
+        if (Temp <= NMinTemp and UHState) {
+          digitalWrite(PinUH,0); //включаем подогрев на дневном минимуме
+          Serial.println("TURN ON UP HITING BY NIGHT TEMP MIN");   
+        }
+        if (Temp >= NMaxTemp and UHState ==0) {
+          digitalWrite(PinUH,1); //отключаем дневной подогрев по максимуму
+          Serial.println("TURN OFF UP HITING BY NIGHT TEMP MAX");  
+        }
+        if (tempDH < DDHMinTemp and DHState){
+          digitalWrite(PinDH,0); //включаем коврик по минимуму
+          Serial.println("TURN ON DOWN HITING BY NIGHT TEMP MIN");  
+        }
+        if (tempDH >= DDHMaxTemp and DHState ==0){
+          digitalWrite(PinDH,1); //отключаем коврик по достижению максимума 
+          Serial.println("TURN OFF DOWN HITING BY NIGHT TEMP MAX");
+        }
       }
    }
    else {
+      Serial.println("manual mode");
       if (DLState != EEPROM.read(22)) { 
+        Serial.println("EEPROM WRITE 22");
         EEPROM.write(22, DLState);
         EEPROM.commit();}
       if (NLState != EEPROM.read(23)){
+        Serial.println("EEPROM WRITE 23");
         EEPROM.write(23, NLState);
         EEPROM.commit(); 
       }
       if (UHState != EEPROM.read(24)){
+        Serial.println("EEPROM WRITE 24");
         EEPROM.write(24, UHState);
         EEPROM.commit(); 
       }
       if (DHState != EEPROM.read(25)){
+        Serial.println("EEPROM WRITE 25");
         EEPROM.write(25, DHState);
         EEPROM.commit(); 
       }
-      if (HState != EEPROM.read(27)){
-        EEPROM.write(27, HState);
-        EEPROM.commit(); 
-      }
-    }
+   }
 }    
 void readmem(){
+  Serial.println("read mem ");
   ManualMod = EEPROM.read(0); // режим работы контроллера 0- авто 1- ручной 
   DMinTemp = EEPROM.read(7);  //дневной минимум температуры
   DMaxTemp = EEPROM.read(8);  //дневной максимум температуры
@@ -65,8 +114,10 @@ void readmem(){
   UWMinLevel = EEPROM.read(17); //минимальное значение УФ излучения от лампы дневного света 
   BeginDay  = EEPROM.read(18); //начало светового дня 
   EndDay    = EEPROM.read(19); //окончание светового дня 
-  NUWMinLevel = EEPROM.read(20); //минимальное значение УФ для включения лампы ночного света 
-  NUWMaxLevel = EEPROM.read(21); //минимальное значение УФ для вкылючения лампы ночного света 
+  NUWMinLevel = EEPROM.read(20); //минимальное значение УФ 
+  NUWMaxLevel = EEPROM.read(21); //минимальное значение УФ 
+  LUXMinLevel = EEPROM.read(26); //минимальное значение LUX для включения лампы ночного света 
+  LUXMaxLevel = EEPROM.read(27); //минимальное значение LUX для вкылючения лампы ночного света 
 }
 
 float currentDigTemp(){
