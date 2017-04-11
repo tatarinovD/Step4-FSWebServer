@@ -76,6 +76,7 @@ function loadRefreshBlock(data2) {
   document.getElementById('date').value = data2['Year']+' / '+data2['Month']+' / '+data2['Day'];  
   document.getElementById('time').value = data2['Hour']+' : '+data2['Minute'];  
   delete data2['Year'];  delete data2['Month'];  delete data2['Day'];  delete data2['Hour'];  delete data2['Minute'];
+    
   for (var key in data2) {
     if (document.getElementById(key).value!= data2[key]){
       document.getElementById(key).value = data2[key];
